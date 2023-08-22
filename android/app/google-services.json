@@ -1,0 +1,76 @@
+{
+  "project_info": {
+    "project_number": "193333945671",
+    "project_id": "bankease-610fb",
+    "storage_bucket": "bankease-610fb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:193333945671:android:124d687b02f0070973d862",
+        "android_client_info": {
+          "package_name": "com.example.bankease"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "193333945671-0a80fhnven8i32lrc59np0cus7mfhbc8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBv_3KekKFEV8pPj92WIebNZ2pGaIoXBGU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "193333945671-0a80fhnven8i32lrc59np0cus7mfhbc8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:193333945671:android:1cc5ec48828f702173d862",
+        "android_client_info": {
+          "package_name": "it.unisannio.bankease"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "193333945671-bk1df06d14ub217bpgthiilbubuqm73b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "it.unisannio.bankease",
+            "certificate_hash": "e9f5fb010123b917f8de2a1aec718ea9697432e3"
+          }
+        },
+        {
+          "client_id": "193333945671-0a80fhnven8i32lrc59np0cus7mfhbc8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBv_3KekKFEV8pPj92WIebNZ2pGaIoXBGU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "193333945671-0a80fhnven8i32lrc59np0cus7mfhbc8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
