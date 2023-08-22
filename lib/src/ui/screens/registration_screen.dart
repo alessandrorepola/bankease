@@ -1,5 +1,7 @@
 import 'package:bankease/src/ui/screens/home_screen.dart';
 import 'package:bankease/src/ui/screens/login_screen.dart';
+import 'package:bankease/src/utils/utils.dart';
+import 'package:bankease/src/viewmodels/auth_viewmodel.dart';
 import 'package:flutter/material.dart';
 
 class RegistrationScreen extends StatefulWidget {
@@ -21,7 +23,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final TextEditingController _controllerConfirmPassword =
       TextEditingController();
 
-  // final Box _boxAccounts = Hive.box("accounts");
   bool _obscurePassword = true;
 
   @override
@@ -37,7 +38,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               SizedBox(
                 width: 60,
                 height: 60,
-                child: Image.asset('images/logo.png'),),
+                child: Image.asset('images/logo.png'),
+              ),
               const SizedBox(height: 10),
               Text(
                 "Create your account",
@@ -61,10 +63,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   if (value == null || value.isEmpty) {
                     return "Please enter username.";
                   }
-                  // else if (_boxAccounts.containsKey(value)) {
-                  //   return "Username is already registered.";
-                  // }
-
                   return null;
                 },
                 onEditingComplete: () => _focusNodeEmail.requestFocus(),
@@ -176,34 +174,22 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     ),
                     onPressed: () {
                       if (_formKey.currentState?.validate() ?? false) {
-                        // _boxAccounts.put(
-                        //   _controllerUsername.text,
-                        //   _controllerConFirmPassword.text,
-                        // );
+                        AuthViewModel().registerUser(context,
+                            email: _controllerEmail.text,
+                            password: _controllerConfirmPassword.text);
 
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            width: 200,
-                            backgroundColor:
-                                Theme.of(context).colorScheme.secondary,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            behavior: SnackBarBehavior.floating,
-                            content: const Text("Registered Successfully"),
-                          ),
-                        );
+                        Utils.snackBar("Register successfully", context);
 
                         _formKey.currentState?.reset();
 
                         Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return const HomeScreen();
-                              },
-                            ),
-                          );
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return const HomeScreen();
+                            },
+                          ),
+                        );
                       }
                     },
                     child: const Text("Register"),
@@ -214,13 +200,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       const Text("Already have an account?"),
                       TextButton(
                         onPressed: () => Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return const LoginScreen();
-                              },
-                            ),
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return const LoginScreen();
+                            },
                           ),
+                        ),
                         child: const Text("Login"),
                       ),
                     ],

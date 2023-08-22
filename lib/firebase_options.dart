@@ -17,7 +17,10 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      return web;
+      throw UnsupportedError(
+        'DefaultFirebaseOptions have not been configured for web - '
+        'you can reconfigure this by running the FlutterFire CLI again.',
+      );
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -25,7 +28,10 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -43,19 +49,9 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyD5aIzxbMlxUj2xVnu30yjn-7K28zDfS4I',
-    appId: '1:193333945671:web:3fa3980acf81fa3973d862',
-    messagingSenderId: '193333945671',
-    projectId: 'bankease-610fb',
-    authDomain: 'bankease-610fb.firebaseapp.com',
-    storageBucket: 'bankease-610fb.appspot.com',
-    measurementId: 'G-B8D3LKJ04C',
-  );
-
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyBv_3KekKFEV8pPj92WIebNZ2pGaIoXBGU',
-    appId: '1:193333945671:android:124d687b02f0070973d862',
+    appId: '1:193333945671:android:579047c85a6c0ffb73d862',
     messagingSenderId: '193333945671',
     projectId: 'bankease-610fb',
     storageBucket: 'bankease-610fb.appspot.com',
@@ -63,23 +59,12 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyBSobri_-yp8791Y4dGfepSS7f6_PCeTyM',
-    appId: '1:193333945671:ios:150eb9d61317e7a473d862',
+    appId: '1:193333945671:ios:9f8e5ccdaa1b2ec673d862',
     messagingSenderId: '193333945671',
     projectId: 'bankease-610fb',
     storageBucket: 'bankease-610fb.appspot.com',
     androidClientId: '193333945671-bk1df06d14ub217bpgthiilbubuqm73b.apps.googleusercontent.com',
     iosClientId: '193333945671-2uj0ppppsp0pk82n5lb1svi4lfml456m.apps.googleusercontent.com',
     iosBundleId: 'com.example.bankease',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBSobri_-yp8791Y4dGfepSS7f6_PCeTyM',
-    appId: '1:193333945671:ios:a9fdf17aff7ac58b73d862',
-    messagingSenderId: '193333945671',
-    projectId: 'bankease-610fb',
-    storageBucket: 'bankease-610fb.appspot.com',
-    androidClientId: '193333945671-bk1df06d14ub217bpgthiilbubuqm73b.apps.googleusercontent.com',
-    iosClientId: '193333945671-09aoqlco1hkmlhnl8r5ijps3gpvttfvq.apps.googleusercontent.com',
-    iosBundleId: 'com.example.bankease.RunnerTests',
   );
 }

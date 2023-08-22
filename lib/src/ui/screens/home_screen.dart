@@ -1,3 +1,4 @@
+import 'package:bankease/src/viewmodels/auth_viewmodel.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -7,7 +8,15 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Login App"),
+        title: const Text("Home page"),
+        actions: [
+        IconButton(
+          icon: const Icon(Icons.logout),
+          onPressed: () {
+            AuthViewModel().signOut(context);
+          },
+        ),
+      ],
       ),
     );
   }

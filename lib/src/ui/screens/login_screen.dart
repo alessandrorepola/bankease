@@ -1,4 +1,7 @@
+import 'package:bankease/src/ui/screens/home_screen.dart';
 import 'package:bankease/src/ui/screens/registration_screen.dart';
+import 'package:bankease/src/utils/utils.dart';
+import 'package:bankease/src/viewmodels/auth_viewmodel.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -17,6 +20,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   bool _obscurePassword = true;
 
+  final AuthViewModel _authViewModel = AuthViewModel();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +35,8 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(
                 width: 60,
                 height: 60,
-                child: Image.asset('images/logo.png'),),
+                child: Image.asset('images/logo.png'),
+              ),
               const SizedBox(height: 10),
               Text(
                 "Login to your account",
@@ -55,10 +61,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   if (value == null || value.isEmpty) {
                     return "Please enter username.";
                   }
-                  //  else if (!_boxAccounts.containsKey(value)) {
-                  //   return "Username is not registered.";
-                  // }
-
                   return null;
                 },
               ),
@@ -91,11 +93,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   if (value == null || value.isEmpty) {
                     return "Please enter password.";
                   }
-                  // else if (value !=
-                  //     _boxAccounts.get(_controllerUsername.text)) {
-                  //   return "Wrong password.";
-                  // }
-
                   return null;
                 },
               ),
@@ -110,20 +107,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     onPressed: () {
-                      _formKey.currentState?.validate();
-                      // if (_formKey.currentState?.validate() ?? false) {
-                      //   _boxLogin.put("loginStatus", true);
-                      //   _boxLogin.put("userName", _controllerUsername.text);
-
-                      //   Navigator.pushReplacement(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //       builder: (context) {
-                      //         return Home();
-                      //       },
-                      //     ),
-                      //   );
-                      // }
+                      if (_formKey.currentState?.validate() ?? false) {
+                        AuthViewModel().loginUser(context,
+                            email: _controllerUsername.text,
+                            password: _controllerPassword.text);
+                      }
                     },
                     child: const Text("Login"),
                   ),
