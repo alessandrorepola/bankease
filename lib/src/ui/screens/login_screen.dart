@@ -1,6 +1,4 @@
-import 'package:bankease/src/ui/screens/home_screen.dart';
 import 'package:bankease/src/ui/screens/registration_screen.dart';
-import 'package:bankease/src/utils/utils.dart';
 import 'package:bankease/src/viewmodels/auth_viewmodel.dart';
 import 'package:flutter/material.dart';
 
@@ -20,8 +18,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   bool _obscurePassword = true;
 
-  final AuthViewModel _authViewModel = AuthViewModel();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(
                 width: 60,
                 height: 60,
-                child: Image.asset('images/logo.png'),
+                child: Image.asset('images/icon.png'),
               ),
               const SizedBox(height: 10),
               Text(

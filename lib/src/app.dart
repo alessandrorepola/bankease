@@ -1,3 +1,4 @@
+import 'package:bankease/src/ui/screens/home_screen.dart';
 import 'package:bankease/src/ui/screens/login_screen.dart';
 import 'package:bankease/src/viewmodels/auth_viewmodel.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,7 @@ class App extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
             useMaterial3: true,
           ),
-          home: const LoginScreen(),
+          home: AuthViewModel().isLoggedIn() ? const HomeScreen() : const LoginScreen(),
         ));
   }
 }

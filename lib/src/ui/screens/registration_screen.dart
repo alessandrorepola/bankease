@@ -38,7 +38,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               SizedBox(
                 width: 60,
                 height: 60,
-                child: Image.asset('images/logo.png'),
+                child: Image.asset('images/icon.png'),
               ),
               const SizedBox(height: 10),
               Text(
