@@ -20,7 +20,7 @@ class App extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
             useMaterial3: true,
           ),
-          home: AuthViewModel().isLoggedIn() ? const HomeScreen() : const LoginScreen(),
+          home: AuthViewModel().isUserLoggedIn() ? const HomeScreen() : const LoginScreen(),
         ));
   }
 }
