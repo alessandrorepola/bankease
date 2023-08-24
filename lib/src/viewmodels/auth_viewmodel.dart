@@ -28,7 +28,7 @@ class AuthViewModel extends ChangeNotifier {
           context,
           MaterialPageRoute(builder: (context) => const LoginScreen())));
 
-  bool isLoggedIn() {
+  bool isUserLoggedIn() {
     User? currentUser = _authRepository.currentUser;
     return currentUser != null;
   }
