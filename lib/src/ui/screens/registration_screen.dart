@@ -1,6 +1,5 @@
 import 'package:bankease/src/ui/screens/home_screen.dart';
 import 'package:bankease/src/ui/screens/login_screen.dart';
-import 'package:bankease/src/utils/utils.dart';
 import 'package:bankease/src/viewmodels/auth_viewmodel.dart';
 import 'package:flutter/material.dart';
 
@@ -75,6 +74,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               const SizedBox(height: 10),
               TextFormField(
                 controller: _controllerSurname,
+                focusNode: _focusNodeSurname,
                 keyboardType: TextInputType.name,
                 decoration: InputDecoration(
                   labelText: "Surname",
@@ -97,6 +97,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               const SizedBox(height: 10),
               TextFormField(
                 controller: _controllerUsername,
+                focusNode: _focusNodeUsername,
                 keyboardType: TextInputType.name,
                 decoration: InputDecoration(
                   labelText: "Username",
@@ -224,13 +225,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     onPressed: () {
                       if (_formKey.currentState?.validate() ?? false) {
                         AuthViewModel().registerUser(context,
+                            name: _controllerName.text,
+                            surname: _controllerSurname.text,
+                            username: _controllerUsername.text,
                             email: _controllerEmail.text,
-                            password: _controllerConfirmPassword.text,
-                            username: '',
-                            name: '',
-                            surname: '');
-
-                        Utils.snackBar("Register successfully", context);
+                            password: _controllerConfirmPassword.text);
 
                         _formKey.currentState?.reset();
 
@@ -274,9 +273,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   @override
   void dispose() {
+    _focusNodeSurname.dispose();
+    _focusNodeUsername.dispose();
     _focusNodeEmail.dispose();
     _focusNodePassword.dispose();
     _focusNodeConfirmPassword.dispose();
+    _controllerName.dispose();
+    _controllerSurname.dispose();
     _controllerUsername.dispose();
     _controllerEmail.dispose();
     _controllerPassword.dispose();
