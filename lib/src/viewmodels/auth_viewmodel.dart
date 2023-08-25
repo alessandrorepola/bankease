@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bankease/src/repository/auth_repository.dart';
 import 'package:bankease/src/repository/firebase_auth_repository.dart';
 import 'package:bankease/src/ui/screens/home_screen.dart';
@@ -27,21 +29,29 @@ class AuthViewModel extends ChangeNotifier {
     required String name,
     required String surname,
   }) async {
-    _authRepository.registerUser(email, password).then((value) async {
+    await _authRepository.registerUser(email, password).then((value) async {
       final uid = _authRepository.currentUser!.uid;
       await _userViewModel
           .createUser(
               uid: uid, username: username, name: name, surname: surname)
+          .then((value) => Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return const HomeScreen();
+                  },
+                ),
+              ))
           .onError((error, stackTrace) async {
         await _authRepository.deleteUser();
-        Utils.snackBar("Registration error", context);
+        return Utils.snackBar("Error in user creation", context);
       });
     }).onError(
         (error, stackTrace) => Utils.snackBar("Registration error", context));
   }
 
   Future<void> signOut(BuildContext context) async =>
-      await _authRepository.signOut().then((value) => Navigator.pushReplacement(
+      _authRepository.signOut().then((value) => Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const LoginScreen())));
 

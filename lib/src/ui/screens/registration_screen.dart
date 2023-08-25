@@ -1,6 +1,4 @@
-import 'package:bankease/src/ui/screens/home_screen.dart';
 import 'package:bankease/src/ui/screens/login_screen.dart';
-import 'package:bankease/src/utils/utils.dart';
 import 'package:bankease/src/viewmodels/auth_viewmodel.dart';
 import 'package:flutter/material.dart';
 
@@ -66,7 +64,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 ),
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
-                    return "Please enter Name.";
+                    return "Please enter name.";
                   }
                   return null;
                 },
@@ -75,6 +73,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               const SizedBox(height: 10),
               TextFormField(
                 controller: _controllerSurname,
+                focusNode: _focusNodeSurname,
                 keyboardType: TextInputType.name,
                 decoration: InputDecoration(
                   labelText: "Surname",
@@ -88,7 +87,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 ),
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
-                    return "Please enter Surname.";
+                    return "Please enter surname.";
                   }
                   return null;
                 },
@@ -97,6 +96,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               const SizedBox(height: 10),
               TextFormField(
                 controller: _controllerUsername,
+                focusNode: _focusNodeUsername,
                 keyboardType: TextInputType.name,
                 decoration: InputDecoration(
                   labelText: "Username",
@@ -223,25 +223,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     ),
                     onPressed: () {
                       if (_formKey.currentState?.validate() ?? false) {
+                        _formKey.currentState?.reset();
+
                         AuthViewModel().registerUser(context,
                             email: _controllerEmail.text,
                             password: _controllerConfirmPassword.text,
-                            username: '',
-                            name: '',
-                            surname: '');
-
-                        Utils.snackBar("Register successfully", context);
-
-                        _formKey.currentState?.reset();
-
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return const HomeScreen();
-                            },
-                          ),
-                        );
+                            username: _controllerUsername.text,
+                            name: _controllerName.text,
+                            surname: _controllerSurname.text);
                       }
                     },
                     child: const Text("Register"),
@@ -274,9 +263,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   @override
   void dispose() {
+    _focusNodeSurname.dispose();
+    _focusNodeUsername.dispose();
     _focusNodeEmail.dispose();
     _focusNodePassword.dispose();
     _focusNodeConfirmPassword.dispose();
+    _controllerName.dispose();
+    _controllerSurname.dispose();
     _controllerUsername.dispose();
     _controllerEmail.dispose();
     _controllerPassword.dispose();

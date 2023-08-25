@@ -26,10 +26,10 @@ class User {
 
   Map<String, dynamic> toJson() {
     return {
-      if (name != null) "name": name,
-      if (surname != null) "surname": surname,
-      if (username != null) "username": username,
-      if (serviceRequests != null) "serviceRequests": serviceRequests,
+      if (name != null) 'name': name,
+      if (surname != null) 'surname': surname,
+      if (username != null) 'username': username,
+      if (serviceRequests != null) 'serviceRequests': serviceRequests,
     };
   }
 }
