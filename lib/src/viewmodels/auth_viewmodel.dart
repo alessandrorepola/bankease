@@ -34,14 +34,6 @@ class AuthViewModel extends ChangeNotifier {
       await _userViewModel
           .createUser(
               uid: uid, username: username, name: name, surname: surname)
-          .then((value) => Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return const HomeScreen();
-                  },
-                ),
-              ))
           .onError((error, stackTrace) async {
         await _authRepository.deleteUser();
         return Utils.snackBar("Error in user creation", context);

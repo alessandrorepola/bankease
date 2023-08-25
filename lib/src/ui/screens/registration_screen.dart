@@ -1,3 +1,4 @@
+import 'package:bankease/src/ui/screens/home_screen.dart';
 import 'package:bankease/src/ui/screens/login_screen.dart';
 import 'package:bankease/src/viewmodels/auth_viewmodel.dart';
 import 'package:flutter/material.dart';
@@ -223,8 +224,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     ),
                     onPressed: () {
                       if (_formKey.currentState?.validate() ?? false) {
-                        _formKey.currentState?.reset();
-
                         AuthViewModel().registerUser(context,
                             name: _controllerName.text,
                             surname: _controllerSurname.text,
@@ -237,9 +236,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                            builder: (context) {
-                              return const HomeScreen();
-                            },
+                            builder: (context) => const HomeScreen(),
                           ),
                         );
                       }
