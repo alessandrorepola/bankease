@@ -27,6 +27,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final TextEditingController _controllerConfirmPassword =
       TextEditingController();
 
+  final _authViewModel = AuthViewModel();
+
   bool _obscurePassword = true;
 
   @override
@@ -224,21 +226,23 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     ),
                     onPressed: () {
                       if (_formKey.currentState?.validate() ?? false) {
-                        AuthViewModel().registerUser(context,
-                            name: _controllerName.text,
-                            surname: _controllerSurname.text,
-                            username: _controllerUsername.text,
-                            email: _controllerEmail.text,
-                            password: _controllerConfirmPassword.text);
+                        _authViewModel
+                            .registerUser(context,
+                                name: _controllerName.text,
+                                surname: _controllerSurname.text,
+                                username: _controllerUsername.text,
+                                email: _controllerEmail.text,
+                                password: _controllerConfirmPassword.text)
+                            .then((value) {
+                          _formKey.currentState?.reset();
 
-                        _formKey.currentState?.reset();
-
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const HomeScreen(),
-                          ),
-                        );
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const HomeScreen(),
+                            ),
+                          );
+                        });
                       }
                     },
                     child: const Text("Register"),
