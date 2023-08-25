@@ -11,7 +11,8 @@ class UserViewModel extends ChangeNotifier {
           required String username,
           required String name,
           required String surname}) async =>
-      await _userRepository.createUser(uid, username, name, surname);
+      await _userRepository.createUser(
+          uid: uid, username: username, name: name, surname: surname);
 
   Future<void> updateUser(
           {required String username,

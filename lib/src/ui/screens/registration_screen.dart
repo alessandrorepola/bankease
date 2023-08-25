@@ -1,4 +1,3 @@
-import 'package:bankease/src/ui/screens/home_screen.dart';
 import 'package:bankease/src/ui/screens/login_screen.dart';
 import 'package:bankease/src/viewmodels/auth_viewmodel.dart';
 import 'package:flutter/material.dart';
@@ -65,7 +64,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 ),
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
-                    return "Please enter Name.";
+                    return "Please enter name.";
                   }
                   return null;
                 },
@@ -88,7 +87,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 ),
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
-                    return "Please enter Surname.";
+                    return "Please enter surname.";
                   }
                   return null;
                 },
@@ -224,6 +223,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     ),
                     onPressed: () {
                       if (_formKey.currentState?.validate() ?? false) {
+                        _formKey.currentState?.reset();
+
                         AuthViewModel().registerUser(context,
                             name: _controllerName.text,
                             surname: _controllerSurname.text,

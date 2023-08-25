@@ -10,11 +10,11 @@ class FirebaseUserRepository implements UserRepository {
 
   @override
   Future<void> createUser(
-      String uid, String name, String surname, String username) async {
+      {String? uid, String? name, String? surname, String? username}) async {
     User user = User(name: name, surname: surname, username: username);
 
     _userDocRef = _usersColRef.doc(uid);
-    await _userDocRef!.set(user.toJson());
+    await _userDocRef?.set(user.toJson());
   }
 
   @override

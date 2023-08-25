@@ -22,12 +22,8 @@ class FirebaseAuthRepository implements AuthRepository {
   }
 
   @override
-  Future<void> signOut() async {
-    await _auth.signOut();
-  }
+  Future<void> signOut() async => await _auth.signOut();
 
   @override
-  Future<void> deleteUser() async {
-    await _auth.currentUser?.delete();
-  }
+  Future<void> deleteUser() async => await _auth.currentUser?.delete();
 }
