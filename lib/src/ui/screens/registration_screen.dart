@@ -14,9 +14,14 @@ class RegistrationScreen extends StatefulWidget {
 class _RegistrationScreenState extends State<RegistrationScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey();
 
+  final FocusNode _focusNodeSurname = FocusNode();
+  final FocusNode _focusNodeUsername = FocusNode();
   final FocusNode _focusNodeEmail = FocusNode();
   final FocusNode _focusNodePassword = FocusNode();
   final FocusNode _focusNodeConfirmPassword = FocusNode();
+
+  final TextEditingController _controllerName = TextEditingController();
+  final TextEditingController _controllerSurname = TextEditingController();
   final TextEditingController _controllerUsername = TextEditingController();
   final TextEditingController _controllerEmail = TextEditingController();
   final TextEditingController _controllerPassword = TextEditingController();
@@ -46,6 +51,50 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
               const SizedBox(height: 35),
+              TextFormField(
+                controller: _controllerName,
+                keyboardType: TextInputType.name,
+                decoration: InputDecoration(
+                  labelText: "Name",
+                  prefixIcon: const Icon(Icons.person_outline),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+                validator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return "Please enter Name.";
+                  }
+                  return null;
+                },
+                onEditingComplete: () => _focusNodeSurname.requestFocus(),
+              ),
+              const SizedBox(height: 10),
+              TextFormField(
+                controller: _controllerSurname,
+                keyboardType: TextInputType.name,
+                decoration: InputDecoration(
+                  labelText: "Surname",
+                  prefixIcon: const Icon(Icons.person_outline),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+                validator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return "Please enter Surname.";
+                  }
+                  return null;
+                },
+                onEditingComplete: () => _focusNodeUsername.requestFocus(),
+              ),
+              const SizedBox(height: 10),
               TextFormField(
                 controller: _controllerUsername,
                 keyboardType: TextInputType.name,
@@ -176,7 +225,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       if (_formKey.currentState?.validate() ?? false) {
                         AuthViewModel().registerUser(context,
                             email: _controllerEmail.text,
-                            password: _controllerConfirmPassword.text);
+                            password: _controllerConfirmPassword.text,
+                            username: '',
+                            name: '',
+                            surname: '');
 
                         Utils.snackBar("Register successfully", context);
 
