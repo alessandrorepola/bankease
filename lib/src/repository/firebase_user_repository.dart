@@ -41,13 +41,13 @@ class FirebaseUserRepository implements UserRepository {
 
   @override
   Future<void> updateUser(
-      {String? username, String? name, String? surname}) async {
-        final oldUser = await getUser();
-        final user = User(
-          username: username ?? oldUser?.username,
-          name: name ?? oldUser?.name,
-          surname: surname ?? oldUser?.surname,
-        );
-        await _userDocRef?.set(user.toJson());
-      }
+      String? username, String? name, String? surname) async {
+    final oldUser = await getUser();
+    final user = User(
+      username: username ?? oldUser?.username,
+      name: name ?? oldUser?.name,
+      surname: surname ?? oldUser?.surname,
+    );
+    await _userDocRef?.set(user.toJson());
+  }
 }
