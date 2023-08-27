@@ -25,8 +25,7 @@ class FirebaseUserRepository implements UserRepository {
     await _userDocRef?.delete();
   }
 
-  @override
-  Future<Map<String, dynamic>> getUserDocument() async {
+  Future<Map<String, dynamic>> _getUserDocument() async {
     Map<String, dynamic> data = {};
     await _userDocRef?.get().then(
       (DocumentSnapshot doc) {
@@ -39,18 +38,16 @@ class FirebaseUserRepository implements UserRepository {
 
   @override
   Future<User?> getUser() async {
-    return User.fromJson(await getUserDocument());
+    return User.fromJson(await _getUserDocument());
   }
 
   @override
-  Future<void> updateUser(
-      String? username, String? name, String? surname) async {
-    final oldUser = await getUser();
-    final user = User(
-      username: username ?? oldUser?.username,
-      name: name ?? oldUser?.name,
-      surname: surname ?? oldUser?.surname,
-    );
+  Future<void> updateUser(User user) async {
     await _userDocRef?.set(user.toJson());
+  }
+
+  @override
+  loadLoggedUser(String uid) {
+    _userDocRef = _usersColRef.doc(uid);
   }
 }

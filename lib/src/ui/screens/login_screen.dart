@@ -120,9 +120,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (context) {
-                                return const RegistrationScreen();
-                              },
+                              builder: (context) => const RegistrationScreen(),
                             ),
                           );
                         },

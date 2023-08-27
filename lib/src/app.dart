@@ -1,6 +1,7 @@
-import 'package:bankease/src/ui/screens/home_screen.dart';
-import 'package:bankease/src/ui/screens/login_screen.dart';
+import 'package:bankease/src/ui/widgets/widget_tree.dart';
 import 'package:bankease/src/viewmodels/auth_viewmodel.dart';
+import 'package:bankease/src/viewmodels/request_viewmodel.dart';
+import 'package:bankease/src/viewmodels/user_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -11,7 +12,9 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
-          ChangeNotifierProvider(create: (context) => AuthViewModel())
+          ChangeNotifierProvider(create: (context) => AuthViewModel()),
+          ChangeNotifierProvider(create: (context) => UserViewModel()),
+          ChangeNotifierProvider(create: (context) => RequestViewModel()),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
@@ -20,7 +23,7 @@ class App extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
             useMaterial3: true,
           ),
-          home: AuthViewModel().isUserLoggedIn() ? const HomeScreen() : const LoginScreen(),
+          home: const WidgetTree(),
         ));
   }
 }

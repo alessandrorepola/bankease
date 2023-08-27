@@ -6,6 +6,14 @@ import 'package:flutter/material.dart';
 class UserViewModel extends ChangeNotifier {
   final UserRepository _userRepository = FirebaseUserRepository();
 
+  User? _user;
+
+  loadLoggedUser(String uid) async {
+    _userRepository.loadLoggedUser(uid);
+    _user = await _userRepository.getUser();
+    notifyListeners();
+  }
+
   Future<void> createUser(
           {required String uid,
           required String username,
@@ -14,13 +22,10 @@ class UserViewModel extends ChangeNotifier {
       await _userRepository.createUser(
           uid: uid, username: username, name: name, surname: surname);
 
-  Future<void> updateUser(
-          {required String username,
-          required String name,
-          required String surname}) async =>
-      await _userRepository.updateUser(username, name, surname);
+  Future<void> updateUser({required User user}) async =>
+      await _userRepository.updateUser(user);
 
-  Future<User?> getUser() async => await _userRepository.getUser();
+  User? getUser() => _user;
 
   Future<void> deleteUser() async => await _userRepository.deleteUser();
 }

@@ -7,18 +7,19 @@ import 'package:bankease/src/ui/screens/login_screen.dart';
 import 'package:bankease/src/utils/error_messages.dart';
 import 'package:bankease/src/utils/utils.dart';
 import 'package:bankease/src/viewmodels/user_viewmodel.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class AuthViewModel extends ChangeNotifier {
   final AuthRepository _authRepository = FirebaseAuthRepository();
-  final UserViewModel _userViewModel = UserViewModel();
 
   Future<void> loginUser(BuildContext context,
       {required String email, required String password}) async {
-    await _authRepository.loginUser(email, password).then((value) {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const HomeScreen()));
-    }).catchError((e) => handleError(e.code, context));
+    await _authRepository
+        .loginUser(email, password)
+        .then((value) => Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => const HomeScreen())))
+        .catchError((e) => handleError(e.code, context));
   }
 
   Future<void> registerUser(
@@ -31,7 +32,7 @@ class AuthViewModel extends ChangeNotifier {
   }) async {
     await _authRepository.registerUser(email, password).then((value) async {
       final uid = _authRepository.currentUser!.uid;
-      await _userViewModel
+      await UserViewModel()
           .createUser(
               uid: uid, username: username, name: name, surname: surname)
           .onError((error, stackTrace) async {
@@ -47,7 +48,6 @@ class AuthViewModel extends ChangeNotifier {
           context,
           MaterialPageRoute(builder: (context) => const LoginScreen())));
 
-  bool isUserLoggedIn() {
-    return _authRepository.currentUser != null;
-  }
+  Stream<User?> get userStream => _authRepository.authStateChanges;
+  String? get uid => _authRepository.currentUser?.uid;
 }
