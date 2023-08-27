@@ -16,7 +16,6 @@ class ServiceRequestUseCases {
     _requestRepository.deleteRequest(request);
   }
 
-  Future<List<ServiceRequest>> getObservableListOfRequests() async {
-    return await _requestRepository.getAllRequests();
-  }
+  Stream<List<ServiceRequest>> fetchRequests() =>
+      _requestRepository.getAllRequests();
 }

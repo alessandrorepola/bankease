@@ -1,4 +1,5 @@
 import 'package:bankease/src/model/service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ServiceRequest {
   final String username;
@@ -17,7 +18,7 @@ class ServiceRequest {
     return ServiceRequest(
       username: data['username'],
       service: Service.values.byName(data['service']),
-      dt: data['dt'],
+      dt: (data['dt'] as Timestamp).toDate(),
       branch: Branch.fromJson(data['branch']),
     );
   }
@@ -34,19 +35,18 @@ class ServiceRequest {
 
 class Branch {
   final String name;
-  final GeoLocation? location;
+  // final GeoLocation? location;
 
-  Branch({required this.name, required this.location});
+  Branch({required this.name});
 
   factory Branch.fromJson(Map<String, dynamic> data) {
-    return Branch(
-        name: data['name'], location: GeoLocation.fromJson(data['location']));
+    return Branch(name: data['name']);
   }
 
   Map<String, dynamic> toJson() {
     return {
       'name': name,
-      'location': location?.toJson(),
+      // 'location': location?.toJson(),
     };
   }
 }

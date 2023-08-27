@@ -1,4 +1,6 @@
 import 'package:bankease/src/ui/screens/add_request_screen.dart';
+import 'package:bankease/src/ui/widgets/main_drawer.dart';
+import 'package:bankease/src/ui/widgets/requests.dart';
 import 'package:bankease/src/viewmodels/auth_viewmodel.dart';
 import 'package:bankease/src/viewmodels/request_viewmodel.dart';
 import 'package:bankease/src/viewmodels/user_viewmodel.dart';
@@ -7,6 +9,8 @@ import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
+
+  static const routeName = '/home';
 
   @override
   Widget build(BuildContext context) {
@@ -24,13 +28,14 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Center(
-          child: ElevatedButton(
-              onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const AddRequestScreen())),
-              child: const Icon(Icons.add))),
+      drawer: const MainDrawer(),
+      body: const Requests(),
+      floatingActionButton: FloatingActionButton(
+          onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const AddRequestScreen())),
+          child: const Icon(Icons.add)),
     );
   }
 }

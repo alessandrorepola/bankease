@@ -25,7 +25,7 @@ class UserViewModel extends ChangeNotifier {
   Future<void> updateUser({required User user}) async =>
       await _userRepository.updateUser(user);
 
-  User? getUser() => _user;
+  User? get user => _user;
 
   Future<void> deleteUser() async => await _userRepository.deleteUser();
 }

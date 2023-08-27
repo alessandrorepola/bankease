@@ -1,30 +1,8 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 
 class Utils {
-  static double? getRandomHeight() {
-    final random = Random();
-    const minHeight = 300;
-    const maxHeight = 550;
-    const heightDifference = 100;
-    final randomHeight =
-        random.nextInt(maxHeight - minHeight - heightDifference + 1) +
-            minHeight;
-    return randomHeight.toDouble();
-  }
-
-  static void fieldFocusChange(
-      BuildContext context, FocusNode current, FocusNode nextFocus) {
-    current.unfocus();
-    FocusScope.of(context).requestFocus(nextFocus);
-  }
-
-  static void changeFocusNode(BuildContext context,
-      {required FocusNode current, required FocusNode next}) {
-    current.unfocus();
-    FocusScope.of(context).requestFocus(next);
-  }
+  static navigateTo(context, destination) => Navigator.push(
+      context, MaterialPageRoute(builder: (context) => destination));
 
   static snackBar(String message, BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

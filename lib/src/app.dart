@@ -1,3 +1,7 @@
+import 'package:bankease/src/ui/screens/add_request_screen.dart';
+import 'package:bankease/src/ui/screens/home_screen.dart';
+import 'package:bankease/src/ui/screens/login_screen.dart';
+import 'package:bankease/src/ui/screens/registration_screen.dart';
 import 'package:bankease/src/ui/widgets/widget_tree.dart';
 import 'package:bankease/src/viewmodels/auth_viewmodel.dart';
 import 'package:bankease/src/viewmodels/request_viewmodel.dart';
@@ -24,6 +28,15 @@ class App extends StatelessWidget {
             useMaterial3: true,
           ),
           home: const WidgetTree(),
+          routes: {
+            HomeScreen.routeName: (context) => const HomeScreen(),
+            AddRequestScreen.routeName: (context) => const AddRequestScreen(),
+            // SettingsScreen.routeName: (context) => SettingsScreen(),
+            LoginScreen.routeName: (context) => const LoginScreen(),
+            RegistrationScreen.routeName: (context) =>
+                const RegistrationScreen(),
+            // RequestDetailScreen.routeName: (context) => RequestDetailScreen(),
+          },
         ));
   }
 }

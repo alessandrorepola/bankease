@@ -11,6 +11,8 @@ import 'package:provider/provider.dart';
 class AddRequestScreen extends StatefulWidget {
   const AddRequestScreen({super.key});
 
+  static const routeName = '/add_request';
+
   @override
   State<AddRequestScreen> createState() => _AddRequestScreenState();
 }
@@ -60,8 +62,7 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
   }
 
   void _addRequest() {
-    final authedUser =
-        Provider.of<UserViewModel>(context, listen: false).getUser();
+    final authedUser = Provider.of<UserViewModel>(context, listen: false).user;
 
     if (authedUser == null) {
       Utils.snackBar("Error retrieving user info", context);
@@ -89,8 +90,6 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
       listen: false,
     ).requests);
 
-    Utils.snackBar(request.toJson().toString(), context);
-
     Navigator.of(context).pop();
   }
 
@@ -104,6 +103,5 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
     }
   }
 
-  Branch _getBranch(String lowerCase) =>
-      Branch(name: lowerCase, location: null);
+  Branch _getBranch(String lowerCase) => Branch(name: lowerCase);
 }

@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirebaseRequestRepository implements ServiceRequestRepository {
   final CollectionReference _requestsColRef;
-  DocumentReference? _requestsDocRef;
 
   FirebaseRequestRepository(String uid)
       : _requestsColRef =
@@ -12,33 +11,36 @@ class FirebaseRequestRepository implements ServiceRequestRepository {
 
   @override
   Future<void> addRequest(ServiceRequest request) async {
-    _requestsDocRef = _requestsColRef.doc(request.dt.toString());
-    await _requestsDocRef?.set(request.toJson());
+    await _requestsColRef.doc(request.dt.toString()).set(request.toJson());
   }
 
   @override
   Future<void> deleteRequest(ServiceRequest request) async {
-    // TODO: implement deleteRequest
-    throw UnimplementedError();
+    await _requestsColRef.doc(request.dt.toString()).delete();
   }
 
   @override
-  Future<List<ServiceRequest>> getAllRequests() async {
-    var querySnapshot = await _requestsColRef.get();
+  Stream<List<ServiceRequest>> getAllRequests() async* {
+    // Get the query snapshot
+    QuerySnapshot snapshot = await _requestsColRef.get();
 
-    List<ServiceRequest> requests = [];
+    // Convert the snapshot to a list of ServiceRequest
+    List<ServiceRequest> requests = snapshot.docs
+        .map((doc) =>
+            ServiceRequest.fromJson(doc.data() as Map<String, dynamic>))
+        .toList();
 
-    for (var document in querySnapshot.docs) {
-      var data = document.data() as Map<String, dynamic>;
-      var request = ServiceRequest(
-        username: data['username'],
-        service: data['serivice'],
-        dt: data['dt'],
-        branch: data['branch'],
-      );
-      requests.add(request);
-    }
+    // Emit the list of ServiceRequest
+    yield requests;
+    // _requestsColRef.snapshots().map((querySnapshot) {
+    //   List<ServiceRequest> requests = [];
 
-    return requests;
+    //   for (var document in querySnapshot.docs) {
+    //     var data = document.data() as Map<String, dynamic>;
+    //     var request = ServiceRequest.fromJson(data);
+    //     requests.add(request);
+    //   }
+    //   return requests;
+    // });
   }
 }
