@@ -9,7 +9,7 @@ class LocalDataSourceInitializer {
 
   createTable(Database db) async {
     return db.execute(
-        'CREATE TABLE `${SqfLiteConstants.requestsTable}` (${SqfLiteConstants.idColumn} TEXT NOT NULL, `${SqfLiteConstants.usernameColumn}` TEXT NOT NULL, `${SqfLiteConstants.serviceTypeColumn}` TEXT NOT NULL, `${SqfLiteConstants.branchId}` TEXT NOT NULL  )');
+        'CREATE TABLE `${SqfLiteConstants.requestsTable}` (${SqfLiteConstants.idColumn} TEXT NOT NULL, `${SqfLiteConstants.usernameColumn}` TEXT NOT NULL, `${SqfLiteConstants.serviceTypeColumn}` TEXT NOT NULL, `${SqfLiteConstants.dateTimeColumn}` TEXT NOT NULL, `${SqfLiteConstants.branchIdColumn}` TEXT NOT NULL )');
   }
 
   Future<Database> openDatabaseConnection() async {

@@ -55,6 +55,7 @@ dependencies:
   riverpod: ^2.3.10
   flutter_localizations:
     sdk: flutter
+  flutter_typeahead: ^4.7.0
 
 dev_dependencies:
   flutter_test:

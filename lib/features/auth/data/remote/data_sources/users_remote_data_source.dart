@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:bankease/core/firestore_crud_operations.dart';
 import 'package:bankease/features/auth/data/exceptions.dart';
-import 'package:bankease/features/auth/data/repositories/user_remote_data_model.dart';
+import 'package:bankease/features/auth/data/remote/model/user_remote_data_model.dart';
 
 class UsersRemoteDataSource
     extends FirestoreCrudOperations<UserRemoteDataModel> {

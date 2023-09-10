@@ -14,11 +14,11 @@ abstract class FirestoreDocumentModel {
 
 class FirestoreCrudOperations<T extends FirestoreDocumentModel> {
   FirestoreCrudOperations(
-    this.collectionName,
+    this._collectionName,
     this.fromFirestore,
   ) {
-    collection = FirebaseFirestore.instance.collection(collectionName);
-    collectionWithConverter = collection.withConverter<T>(
+    _collection = FirebaseFirestore.instance.collection(_collectionName);
+    _collectionWithConverter = _collection.withConverter<T>(
         fromFirestore: (_, __) => fromFirestore(_),
         toFirestore: (_, __) => _.toMap());
   }
@@ -26,51 +26,58 @@ class FirestoreCrudOperations<T extends FirestoreDocumentModel> {
   final T Function(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
   ) fromFirestore;
-  final String collectionName;
-  late final CollectionReference<T> collectionWithConverter;
-  late final CollectionReference<Map<String, dynamic>> collection;
+  final String _collectionName;
+  late final CollectionReference<T> _collectionWithConverter;
+  late final CollectionReference<Map<String, dynamic>> _collection;
 
   DocumentReference<Map<String, dynamic>> getDocumentReference(String id) {
-    return collection.doc(id);
+    return _collection.doc(id);
   }
 
+  CollectionReference<T> get collectionWithConverter =>
+      _collectionWithConverter;
+
   Stream<List<T>> listen() {
-    return collectionWithConverter
+    return _collectionWithConverter
         .snapshots()
         .map((event) => event.docs.map((e) => e.data()).toList());
   }
 
   Future<List<T>> getAll() async {
-    final result = await collectionWithConverter.get();
+    final result = await _collectionWithConverter.get();
     return result.docs.map((e) => e.data()).toList();
   }
 
   Future<T> add(T data) async {
-    await collectionWithConverter.doc(data.id).set(data);
+    await _collectionWithConverter.doc(data.id).set(data);
     return data;
   }
 
   Future<void> delete(String id) async {
-    await collectionWithConverter.doc(id).delete();
+    await _collectionWithConverter.doc(id).delete();
   }
 
   Future<void> update(
     T data,
   ) async {
-    await collectionWithConverter.doc(data.id).update(data.toMap());
+    await _collectionWithConverter.doc(data.id).update(data.toMap());
   }
 
   Future<T?> getOne(
     String id,
   ) async {
-    final get = await collectionWithConverter.doc(id).get();
+    final get = await _collectionWithConverter.doc(id).get();
     return get.data();
   }
 
   Future<DocumentSnapshot<T>> getDocument(
     String id,
   ) async {
-    final get = await collectionWithConverter.doc(id).get();
+    final get = await _collectionWithConverter.doc(id).get();
     return get;
+  }
+
+  Future<String> getDocumentId() async {
+    return _collectionWithConverter.doc().id;
   }
 }
