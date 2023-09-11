@@ -1,12 +1,8 @@
-import 'package:bankease/features/requests/domain/entities/branch.dart';
 import 'package:bankease/features/requests/domain/repositories/branches_repo.dart';
 import 'package:dartz/dartz.dart';
-import 'package:flutter/foundation.dart';
 import 'package:bankease/core/failures/failures.dart';
 import 'package:bankease/core/network/network_info.dart';
 import 'package:bankease/features/auth/domain/repositories/auth_repo.dart';
-import 'package:bankease/features/requests/data/local/data_sources/requests_local_data_source.dart';
-import 'package:bankease/features/requests/data/mappers/local_domain_mapper.dart';
 import 'package:bankease/features/requests/data/mappers/remote_domain_mapper.dart';
 import 'package:bankease/features/requests/data/remote/data_sources/requests_remote_data_source.dart';
 import 'package:bankease/features/requests/data/remote/models/request_remote_data_model.dart';
@@ -33,7 +29,7 @@ class RequestsRepoImpl implements RequestsRepo {
           id: docId,
           service: params.service,
           dateTime: params.dateTime,
-          state: params.state,
+          status: params.state,
           branchId: params.branchId,
           userId: _authRepo.getLoggedUser().id));
       return right(unit);
@@ -55,16 +51,17 @@ class RequestsRepoImpl implements RequestsRepo {
 
   @override
   Stream<List<Request>> listenRequests() {
-    final user = _authRepo.getLoggedUser();
+    final userId = _authRepo.getLoggedUser().id;
     return _remoteDataSource.collectionWithConverter
-        .where('userId', isEqualTo: user.id)
+        .where('userId', isEqualTo: _authRepo.getLoggedUser().id)
         .snapshots()
         .asyncMap((event) async {
       if (event.docs.isNotEmpty) {
         final requests = event.docs.map((e) async {
           final branch =
               (await _branchesRepo.getBranchById(e.data().branchId))!;
-          return RemoteDomainMapper.toDomain(e.data(), user, branch);
+          return RemoteDomainMapper.toDomain(
+              e.data(), await _authRepo.getUserById(userId), branch);
         });
         return await Future.wait(requests.toList());
       } else {

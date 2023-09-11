@@ -5,7 +5,7 @@ class SqfLiteConstants {
   static const String requestsTable = 'requests';
   static const String usernameColumn = 'username';
   static const String serviceTypeColumn = 'service';
-  static const String stateColumn = 'state';
+  static const String statusColumn = 'status';
   static const String dateTimeColumn = 'date_time';
   static const String branchIdColumn = 'branch_id';
 

@@ -11,8 +11,8 @@ class RemoteDomainMapper {
       user: user,
       service: Service.values
           .firstWhere((element) => element.name == remoteData.service),
-      state: State.values
-          .firstWhere((element) => element.name == remoteData.state),
+      status: Status.values
+          .firstWhere((element) => element.name == remoteData.status),
       dt: DateTime.tryParse(remoteData.dateTime),
       branch: branch,
     );
@@ -23,7 +23,7 @@ class RemoteDomainMapper {
         id: request.id,
         service: request.service.name,
         dateTime: request.dt.toString(),
-        state: request.state.name,
+        status: request.status.name,
         userId: request.user.id,
         branchId: request.branch.id);
   }

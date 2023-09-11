@@ -1,3 +1,4 @@
+import 'package:bankease/core/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bankease/core/injection.dart';
@@ -40,6 +41,8 @@ class RequestsList extends StatelessWidget {
               return RequestCard(
                 request: request,
                 index: index,
+                onTap: () => Navigator.of(context)
+                    .pushNamed(AppRoutes.requestDetails, arguments: request),
               );
             },
             separatorBuilder: (BuildContext context, int index) {

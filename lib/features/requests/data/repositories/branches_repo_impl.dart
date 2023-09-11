@@ -1,4 +1,3 @@
-import 'package:bankease/features/requests/data/local/data_sources/branches_local_data_source.dart';
 import 'package:bankease/features/requests/data/mappers/branch_remote_domain_mapper.dart';
 import 'package:bankease/features/requests/data/remote/data_sources/branches_remote_data_source.dart';
 import 'package:bankease/features/requests/domain/entities/branch.dart';

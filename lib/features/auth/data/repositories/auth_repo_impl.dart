@@ -13,17 +13,17 @@ import 'package:bankease/features/auth/domain/repositories/auth_repo.dart';
 import 'package:bankease/features/auth/domain/use_cases/register_use_case.dart';
 
 class AuthRepoImpl implements AuthRepo {
-  final UsersRemoteDataSource usersRemoteDataSource;
-  final FirebaseAuth firebaseAuth;
+  final UsersRemoteDataSource _usersRemoteDataSource;
+  final FirebaseAuth _firebaseAuth;
 
-  AuthRepoImpl(this.usersRemoteDataSource, this.firebaseAuth);
+  AuthRepoImpl(this._usersRemoteDataSource, this._firebaseAuth);
 
   @override
   UserEntity getLoggedUser() {
-    final user = usersRemoteDataSource.getLoggedUser();
+    final user = _usersRemoteDataSource.getLoggedUser();
     return UserEntity(
       id: user.uid,
-      name: user.displayName!,
+      name: user.displayName ?? '',
       profilePicture: user.photoURL ?? '',
       email: user.email!,
     );
@@ -33,7 +33,7 @@ class AuthRepoImpl implements AuthRepo {
   Future<Either<AuthFailure, UserEntity>> login(
       EmailAddress emailAddress, Password password) async {
     try {
-      final result = await usersRemoteDataSource.login(
+      final result = await _usersRemoteDataSource.login(
           emailAddress.getOrCrash(), password.getOrCrash());
       return const Right(
           UserEntity(id: '', name: '', email: '', profilePicture: ''));
@@ -58,7 +58,7 @@ class AuthRepoImpl implements AuthRepo {
 
   @override
   Future<UserEntity> getUserById(String id) async {
-    final result = await usersRemoteDataSource.getOne(id);
+    final result = await _usersRemoteDataSource.getOne(id);
     return UserEntity(
       id: result!.id,
       name: result.name,
@@ -71,7 +71,7 @@ class AuthRepoImpl implements AuthRepo {
   Future<Either<AuthFailure, Unit>> register(
       RegisterParams registerParams) async {
     try {
-      final result = await usersRemoteDataSource.register(
+      final result = await _usersRemoteDataSource.register(
           registerParams.fullName,
           registerParams.emailAddress.getOrCrash(),
           registerParams.password.getOrCrash());
@@ -94,6 +94,6 @@ class AuthRepoImpl implements AuthRepo {
 
   @override
   Future<void> logout() {
-    return firebaseAuth.signOut();
+    return _firebaseAuth.signOut();
   }
 }

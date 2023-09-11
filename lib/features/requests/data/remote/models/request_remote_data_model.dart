@@ -1,13 +1,13 @@
 import 'package:bankease/core/firestore_crud_operations.dart';
 
 class RequestRemoteDataModel extends FirestoreDocumentModel {
-  final String service, dateTime, state, userId, branchId;
+  final String service, dateTime, status, userId, branchId;
 
   RequestRemoteDataModel(
       {required String id,
       required this.service,
       required this.dateTime,
-      required this.state,
+      required this.status,
       required this.userId,
       required this.branchId})
       : super(id);
@@ -15,7 +15,7 @@ class RequestRemoteDataModel extends FirestoreDocumentModel {
   RequestRemoteDataModel.fromFirestoreDocument(super.doc)
       : service = doc['service'],
         dateTime = doc['dateTime'],
-        state = doc['state'],
+        status = doc['status'],
         userId = doc['userId'],
         branchId = doc['branchId'],
         super.fromFirestoreDocument();
@@ -25,7 +25,7 @@ class RequestRemoteDataModel extends FirestoreDocumentModel {
     return {
       'service': service,
       'dateTime': dateTime,
-      'state': state,
+      'status': status,
       'userId': userId,
       'branchId': branchId
     };
@@ -35,14 +35,14 @@ class RequestRemoteDataModel extends FirestoreDocumentModel {
       {String? id,
       String? service,
       String? dateTime,
-      String? state,
+      String? status,
       String? userId,
       String? branchId}) {
     return RequestRemoteDataModel(
         id: id ?? this.id,
         service: service ?? this.service,
         dateTime: dateTime ?? this.dateTime,
-        state: state ?? this.state,
+        status: status ?? this.status,
         userId: userId ?? this.userId,
         branchId: branchId ?? this.branchId);
   }

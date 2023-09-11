@@ -8,13 +8,13 @@ import 'package:bankease/features/auth/domain/repositories/auth_repo.dart';
 import '../failures.dart';
 
 class LoginUseCase implements FailureUseCase<UserEntity, LoginParams> {
-  final AuthRepo authRepo;
+  final AuthRepo _authRepo;
 
-  LoginUseCase(this.authRepo);
+  LoginUseCase(this._authRepo);
 
   @override
   Future<Either<AuthFailure, UserEntity>> call(LoginParams params) {
-    return authRepo.login(params.emailAddress, params.password);
+    return _authRepo.login(params.emailAddress, params.password);
   }
 }
 

@@ -2,12 +2,12 @@ import 'package:bankease/core/constants/sqflite_constants.dart';
 import 'package:bankease/core/sqflite.dart';
 
 class RequestLocalDataModel extends SqfLiteLocalDataModel {
-  final String service, dateTime, state, username, branchId;
+  final String service, dateTime, status, username, branchId;
 
   RequestLocalDataModel(
       {required this.service,
       required this.dateTime,
-      required this.state,
+      required this.status,
       required this.username,
       required this.branchId,
       required String id})
@@ -16,7 +16,7 @@ class RequestLocalDataModel extends SqfLiteLocalDataModel {
   RequestLocalDataModel.fromMap(Map map)
       : service = map[SqfLiteConstants.serviceTypeColumn],
         dateTime = map[SqfLiteConstants.dateTimeColumn],
-        state = map[SqfLiteConstants.stateColumn],
+        status = map[SqfLiteConstants.statusColumn],
         username = map[SqfLiteConstants.usernameColumn],
         branchId = map[SqfLiteConstants.branchIdColumn],
         super.fromMap(map);
@@ -26,7 +26,7 @@ class RequestLocalDataModel extends SqfLiteLocalDataModel {
     return {
       SqfLiteConstants.serviceTypeColumn: service,
       SqfLiteConstants.dateTimeColumn: dateTime,
-      SqfLiteConstants.stateColumn: state,
+      SqfLiteConstants.statusColumn: status,
       SqfLiteConstants.usernameColumn: username,
       SqfLiteConstants.branchIdColumn: branchId,
       ...super.toMap()

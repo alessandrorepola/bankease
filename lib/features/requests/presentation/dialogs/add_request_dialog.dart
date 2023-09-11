@@ -1,6 +1,3 @@
-import 'package:bankease/features/requests/data/mappers/branch_remote_domain_mapper.dart';
-import 'package:bankease/features/requests/data/remote/data_sources/branches_remote_data_source.dart';
-import 'package:bankease/features/requests/data/remote/models/branch_remote_data_model.dart';
 import 'package:bankease/features/requests/domain/entities/request.dart';
 import 'package:bankease/features/requests/domain/use_cases/get_filtered_branches_use_case.dart';
 import 'package:flutter/material.dart';
@@ -41,33 +38,30 @@ class AddRequestDialog extends ConsumerWidget {
                           Border.all(width: 1.0, color: Colors.grey.shade300),
                       borderRadius: BorderRadius.circular(10.0),
                     ),
-                    child: Expanded(
-                      child: DropdownButtonFormField(
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        dropdownColor: Colors.white,
-                        icon: const Icon(Icons.arrow_drop_down),
-                        validator: (value) {
-                          if (value == null) {
-                            return "Select Service";
-                          } else {
-                            return null;
-                          }
-                        },
-                        iconSize: 28,
-                        hint: const Text("Select Service"),
-                        isExpanded: true,
-                        value: state.service,
-                        onChanged: (value) {
-                          if (value != null) {
-                            notifier.onChangedService(value);
-                          }
-                        },
-                        items: Service.values.map((valueItem) {
-                          return DropdownMenuItem(
-                              value: valueItem.name,
-                              child: Text(valueItem.name));
-                        }).toList(),
-                      ),
+                    child: DropdownButtonFormField(
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      dropdownColor: Colors.white,
+                      icon: const Icon(Icons.arrow_drop_down),
+                      validator: (value) {
+                        if (value == null) {
+                          return "Select Service";
+                        } else {
+                          return null;
+                        }
+                      },
+                      iconSize: 28,
+                      hint: const Text("Select Service"),
+                      isExpanded: true,
+                      value: state.service,
+                      onChanged: (value) {
+                        if (value != null) {
+                          notifier.onChangedService(value);
+                        }
+                      },
+                      items: Service.values.map((valueItem) {
+                        return DropdownMenuItem(
+                            value: valueItem.name, child: Text(valueItem.name));
+                      }).toList(),
                     ),
                   ),
                   SizedBox(height: 20.h),

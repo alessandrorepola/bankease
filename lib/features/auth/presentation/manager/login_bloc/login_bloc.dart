@@ -12,9 +12,9 @@ part 'login_event.dart';
 part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  final LoginUseCase loginUseCase;
+  final LoginUseCase _loginUseCase;
 
-  LoginBloc(this.loginUseCase) : super(LoginState.initial()) {
+  LoginBloc(this._loginUseCase) : super(LoginState.initial()) {
     on<LoginEvent>((event, emit) async {
       if (event is EmailChanged) {
         emit(state.copyWith(
@@ -27,9 +27,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           emailAddress: state.email,
           password: state.password,
         );
-        print(params.emailAddress);
-        print(params.password);
-        final result = await loginUseCase.call(params);
+        final result = await _loginUseCase.call(params);
         emit(state.copyWith(authFailureOrSuccessOption: some(result)));
       }
     });
