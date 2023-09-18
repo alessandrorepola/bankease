@@ -1,3 +1,4 @@
+import 'package:bankease/core/utils/utils.dart';
 import 'package:equatable/equatable.dart';
 import 'package:bankease/core/domain/entities/user_entity.dart';
 import 'package:bankease/features/requests/domain/entities/branch.dart';
@@ -10,7 +11,8 @@ class Request extends Equatable {
   final String id;
   final UserEntity user;
   final Service service;
-  final DateTime dt;
+  final DateTime requestDT;
+  final DateTime serviceDT;
   final Status status;
   final Branch branch;
 
@@ -20,32 +22,43 @@ class Request extends Equatable {
     required this.service,
     required this.status,
     required this.branch,
-    DateTime? dt,
-  }) : dt = dt ?? DateTime.now();
+    DateTime? requestDT,
+    DateTime? serviceDT,
+  })  : requestDT = requestDT ?? DateTime.now(),
+        serviceDT =
+            serviceDT ?? Utils.serviceScheduler(requestDT ?? DateTime.now());
 
-  String get time =>
-      'Time: ${dt.hour.toString().padLeft(2, '0')}:${dt.minute.toString().padLeft(2, '0')}:${dt.second.toString().padLeft(2, '0')}';
+  String get requestTime =>
+      'Time: ${requestDT.hour.toString().padLeft(2, '0')}:${requestDT.minute.toString().padLeft(2, '0')}:${requestDT.second.toString().padLeft(2, '0')}';
 
-  String get day =>
-      'Day: ${dt.year}-${dt.month.toString().padLeft(2, '0')}-${dt.day.toString().padLeft(2, '0')}';
+  String get requestDay =>
+      'Day: ${requestDT.year}-${requestDT.month.toString().padLeft(2, '0')}-${requestDT.day.toString().padLeft(2, '0')}';
+
+  String get serviceTime =>
+      'Time: ${serviceDT.hour.toString().padLeft(2, '0')}:${serviceDT.minute.toString().padLeft(2, '0')}:${serviceDT.second.toString().padLeft(2, '0')}';
+
+  String get serviceDay =>
+      'Day: ${serviceDT.year}-${serviceDT.month.toString().padLeft(2, '0')}-${serviceDT.day.toString().padLeft(2, '0')}';
 
   Request copyWith(
       {String? id,
       UserEntity? user,
       Service? service,
-      DateTime? dt,
+      DateTime? requestDT,
+      DateTime? serviceDT,
       Status? status,
       Branch? branch}) {
     return Request(
         id: id ?? this.id,
         user: user ?? this.user,
         service: service ?? this.service,
-        dt: dt ?? this.dt,
+        requestDT: requestDT ?? this.requestDT,
+        serviceDT: serviceDT ?? this.serviceDT,
         status: status ?? this.status,
         branch: branch ?? this.branch);
   }
 
   // equality
   @override
-  List<Object?> get props => [user, branch, dt, id];
+  List<Object?> get props => [user, branch, requestDT, serviceDT, id];
 }

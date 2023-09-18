@@ -2,24 +2,23 @@ import 'package:bankease/features/home/widgets/home_drawer.dart';
 import 'package:bankease/features/profile/presentation/pages/profile_page.dart';
 import 'package:bankease/features/requests/presentation/pages/requests_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends ConsumerWidget {
   const HomePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return DefaultTabController(
-      initialIndex: 0,
       length: 2,
       child: Scaffold(
         drawer: const HomeDrawer(),
         appBar: AppBar(
-          titleSpacing: -10,
-          title: const Text('Home Page'),
+          title: const Text('Home'),
           bottom: const TabBar(
             tabs: <Widget>[
               Tab(
-                text: 'Home',
+                text: 'Requests',
               ),
               Tab(
                 text: 'Account',

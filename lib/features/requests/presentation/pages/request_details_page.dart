@@ -7,6 +7,7 @@ class RequestDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final request = ModalRoute.of(context)!.settings.arguments as Request;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Request Details'),
@@ -19,8 +20,10 @@ class RequestDetailsPage extends StatelessWidget {
             Text(request.user.email),
             Text(request.service.name),
             Text(request.status.name),
-            Text(request.time),
-            Text(request.day),
+            Text(request.requestTime),
+            Text(request.requestDay),
+            Text(request.serviceTime),
+            Text(request.serviceDay),
             Text(request.branch.toString()),
           ],
         ),

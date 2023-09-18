@@ -8,7 +8,7 @@ import 'package:bankease/features/auth/domain/use_cases/register_use_case.dart';
 abstract class AuthRepo {
   UserEntity getLoggedUser();
 
-  Future<UserEntity> getUserById(String id);
+  Future<UserEntity> getUserInfo();
 
   Future<void> logout();
 

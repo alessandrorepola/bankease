@@ -44,6 +44,7 @@ class SqfLiteLocalDataSource<T extends SqfLiteLocalDataModel> {
     for (var row in rows) {
       batch.insert(tableName, row.toMap());
     }
+    // ignore: unused_local_variable
     final result = await batch.commit();
     return rows;
   }

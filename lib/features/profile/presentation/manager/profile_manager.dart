@@ -1,17 +1,17 @@
+import 'package:bankease/features/auth/domain/repositories/auth_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:bankease/core/domain/entities/user_entity.dart';
 import 'package:bankease/core/injection.dart';
 import 'package:bankease/core/use_case/use_case.dart';
-import 'package:bankease/features/auth/data/repositories/auth_repo_impl.dart';
 import 'package:bankease/features/auth/domain/use_cases/logout_use_case.dart';
 import 'package:bankease/features/profile/domain/use_cases/get_profile_use_case.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final profileProvider =
     ChangeNotifierProvider.autoDispose<ProfileProvider>((ref) {
   return ProfileProvider(
-    GetProfileUseCase(Injection.getIt.get<AuthRepoImpl>()),
-    LogoutUseCase(Injection.getIt.get<AuthRepoImpl>()),
+    GetProfileUseCase(Injection.getIt.get<AuthRepo>()),
+    LogoutUseCase(Injection.getIt.get<AuthRepo>()),
   );
 });
 

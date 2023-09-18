@@ -14,7 +14,8 @@ class LocalDomainMapper {
                   .firstWhere((element) => element.name == e.service),
               status: Status.values
                   .firstWhere((element) => element.name == e.status),
-              dt: DateTime.tryParse(e.dateTime),
+              requestDT: DateTime.tryParse(e.requestDT),
+              serviceDT: DateTime.tryParse(e.serviceDT),
               branch: branch,
             ))
         .toList();
@@ -23,11 +24,12 @@ class LocalDomainMapper {
   static RequestLocalDataModel toLocalDataModel(Request request) {
     return RequestLocalDataModel(
         service: request.service.name,
-        dateTime: request.dt.toString(),
+        requestDT: request.requestDT.toString(),
+        serviceDT: request.serviceDT.toString(),
         status: request.status.name,
         username: request.user.name,
         branchId: request.branch.id,
-        id: request.dt.toString());
+        id: request.requestDT.toString());
   }
 
   static List<RequestLocalDataModel> toLocalDataModelList(

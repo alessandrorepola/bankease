@@ -57,7 +57,8 @@ class AuthRepoImpl implements AuthRepo {
   }
 
   @override
-  Future<UserEntity> getUserById(String id) async {
+  Future<UserEntity> getUserInfo() async {
+    final id = getLoggedUser().id;
     final result = await _usersRemoteDataSource.getOne(id);
     return UserEntity(
       id: result!.id,

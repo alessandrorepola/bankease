@@ -11,7 +11,7 @@ class AppRoutes {
   static const String login = '/login';
   static const String register = '/register';
   static const String requestDetails = '/request_details';
-  late final String initialRoute;
+  String? initialRoute;
 
   AppRoutes(this.firebaseAuth) {
     if (firebaseAuth.currentUser == null) {

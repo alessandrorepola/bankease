@@ -15,7 +15,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   final RegisterUseCase registerUseCase;
 
   RegisterBloc(this.registerUseCase) : super(RegisterState.initial()) {
-    print('RegisterBloc');
+    debugPrint('RegisterBloc');
     on<RegisterEvent>((event, emit) async {
       if (event is EmailChanged) {
         emit(state.copyWith(

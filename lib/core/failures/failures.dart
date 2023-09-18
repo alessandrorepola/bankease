@@ -4,4 +4,6 @@ class Failure {}
 
 class NetworkFailure extends Failure {}
 
+class DocumentNotFoundFailure extends Failure {}
+
 class UnexpectedFailure extends Failure implements AuthFailure {}

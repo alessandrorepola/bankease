@@ -2,8 +2,8 @@ import 'package:bankease/features/requests/domain/entities/request.dart';
 import 'package:bankease/features/requests/domain/use_cases/get_filtered_branches_use_case.dart';
 import 'package:flutter/material.dart';
 import 'package:bankease/features/requests/presentation/manager/add_request/add_request_manager.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 class AddRequestDialog extends ConsumerWidget {

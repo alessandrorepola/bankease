@@ -5,20 +5,20 @@ import 'package:bankease/features/auth/data/remote/model/user_remote_data_model.
 
 class UsersRemoteDataSource
     extends FirestoreCrudOperations<UserRemoteDataModel> {
-  final FirebaseAuth firebaseAuth;
-// firebase authentication
-  UsersRemoteDataSource(this.firebaseAuth)
+  final FirebaseAuth _firebaseAuth;
+
+  UsersRemoteDataSource(this._firebaseAuth)
       : super('users', UserRemoteDataModel.fromFirestoreDocument);
 
   User getLoggedUser() {
-    final user = firebaseAuth.currentUser;
+    final user = _firebaseAuth.currentUser;
     return user!;
   }
 
   // register
   Future<User?> register(String name, String email, String password) async {
     try {
-      final result = await firebaseAuth.createUserWithEmailAndPassword(
+      final result = await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
       final user = result.user!;
       const defaultAvatar = '';
@@ -45,7 +45,7 @@ class UsersRemoteDataSource
 
   Future<User?> login(String email, String password) async {
     try {
-      final result = await firebaseAuth.signInWithEmailAndPassword(
+      final result = await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
       return result.user!;
     } on FirebaseAuthException catch (e) {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:bankease/features/requests/domain/entities/request.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class RequestCard extends ConsumerWidget {
   const RequestCard(
@@ -38,7 +38,8 @@ class RequestCard extends ConsumerWidget {
               children: [
                 Text(request.id),
                 Text(request.branch.id.toString()),
-                Text(request.dt.toString()),
+                Text(request.requestDT.toString()),
+                Text(request.serviceDT.toString()),
                 Text(request.service.name),
                 Text(request.status.name),
                 Text(request.user.email)

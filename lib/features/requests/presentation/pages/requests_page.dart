@@ -1,4 +1,5 @@
 import 'package:bankease/core/app_routes.dart';
+import 'package:bankease/core/services/local_notification_service/local_notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bankease/core/injection.dart';
@@ -59,6 +60,18 @@ class RequestsList extends StatelessWidget {
               onPressed: () {
                 showDialog(
                     context: context, builder: (_) => AddRequestDialog());
+              },
+            ),
+          ),
+          Positioned(
+            right: 25.w,
+            bottom: 30.h,
+            child: ElevatedButton(
+              child: const Text('Notifica'),
+              onPressed: () {
+                Injection.getIt
+                    .get<LocalNotificationService>()
+                    .showNotification();
               },
             ),
           )
