@@ -1,3 +1,4 @@
+import 'package:app_settings/app_settings.dart';
 import 'package:bankease/core/app_routes.dart';
 import 'package:bankease/features/home/presentation/manager/home_manager.dart';
 import 'package:bankease/features/home/widgets/drawer_tile.dart';
@@ -51,6 +52,12 @@ class HomeDrawer extends ConsumerWidget {
               onTap: () {
                 ref.read(homeProvider.notifier).changePageIndex(1);
               }),
+          DrawerTile(
+            iconData: Icons.notifications,
+            text: 'Notifications',
+            onTap: () =>
+                AppSettings.openAppSettings(type: AppSettingsType.notification),
+          ),
           DrawerTile(
               iconData: Icons.logout,
               text: 'Logout',

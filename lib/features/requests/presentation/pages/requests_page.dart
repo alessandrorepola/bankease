@@ -14,7 +14,7 @@ class RequestsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<RequestsBloc>(
-      create: (BuildContext context) => Injection.getIt.get<RequestsBloc>(),
+      create: (BuildContext context) => sl<RequestsBloc>(),
       child: const RequestsList(),
     );
   }
@@ -69,9 +69,7 @@ class RequestsList extends StatelessWidget {
             child: ElevatedButton(
               child: const Text('Notifica'),
               onPressed: () {
-                Injection.getIt
-                    .get<LocalNotificationService>()
-                    .showNotification();
+                sl<LocalNotificationService>().showNotification();
               },
             ),
           )

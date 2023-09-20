@@ -19,39 +19,45 @@ import 'package:sqflite/sqflite.dart';
 
 import '../features/auth/presentation/manager/register_bloc/register_bloc.dart';
 
-class Injection {
-  static final getIt = GetIt.instance;
+final sl = GetIt.instance;
 
+class Injection {
   static setup() async {
     openDatabase('path');
     final LocalDataSourceInitializer localDataSourceInitializer =
         LocalDataSourceInitializer();
     await localDataSourceInitializer.openDatabaseConnection();
-    getIt.registerSingleton<Database>(localDataSourceInitializer.database);
-    getIt.registerSingleton<FirebaseAuth>(FirebaseAuth.instance);
-    getIt.registerSingleton<AppRoutes>(AppRoutes(getIt.get<FirebaseAuth>()));
-    getIt.registerSingleton<LocalNotificationService>(
-        LocalNotificationService());
 
-    getIt.registerSingleton<AuthRepo>(
-      AuthRepoImpl(UsersRemoteDataSource(getIt.get<FirebaseAuth>()),
-          getIt.get<FirebaseAuth>()),
+    // Dependecies
+    sl.registerSingleton<Database>(localDataSourceInitializer.database);
+    sl.registerSingleton<FirebaseAuth>(FirebaseAuth.instance);
+
+    // Services
+    sl.registerSingleton<AppRoutes>(AppRoutes(sl<FirebaseAuth>()));
+    sl.registerSingleton<LocalNotificationService>(LocalNotificationService());
+
+    // Repos
+    sl.registerSingleton<AuthRepo>(
+      AuthRepoImpl(
+          UsersRemoteDataSource(sl<FirebaseAuth>()), sl<FirebaseAuth>()),
     );
-    getIt.registerLazySingleton<RequestsRepo>(
+    sl.registerLazySingleton<RequestsRepo>(
       () => RequestsRepoImpl(
           RequestsRemoteDataSource(),
           // NetworkInfoImpl(InternetConnectionChecker()),
-          getIt.get<AuthRepo>(),
+          sl<AuthRepo>(),
           BranchesRepoImpl()),
     );
-    getIt.registerFactory<RequestsBloc>(
-        () => RequestsBloc(LoadRequestsUseCase(getIt.get<RequestsRepo>())));
-    getIt.registerFactory<RegisterBloc>(() => RegisterBloc(RegisterUseCase(
-          getIt.get<AuthRepo>(),
+
+    // Blocs
+    sl.registerFactory<RequestsBloc>(
+        () => RequestsBloc(LoadRequestsUseCase(sl<RequestsRepo>())));
+    sl.registerFactory<RegisterBloc>(() => RegisterBloc(RegisterUseCase(
+          sl<AuthRepo>(),
         )));
 
-    getIt.registerFactory<LoginBloc>(() => LoginBloc(LoginUseCase(
-          getIt.get<AuthRepo>(),
+    sl.registerFactory<LoginBloc>(() => LoginBloc(LoginUseCase(
+          sl<AuthRepo>(),
         )));
   }
 }

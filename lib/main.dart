@@ -16,7 +16,7 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await Injection.setup();
-  await Injection.getIt.get<LocalNotificationService>().init();
+  await sl<LocalNotificationService>().init();
   runApp(const ProviderScope(child: App()));
 }
 
@@ -41,7 +41,7 @@ class App extends StatelessWidget {
         supportedLocales: const [
           Locale('it', 'IT'),
         ],
-        initialRoute: Injection.getIt.get<AppRoutes>().initialRoute,
+        initialRoute: sl<AppRoutes>().initialRoute,
         locale: const Locale('it', 'IT'),
         routes: AppRoutes.routes,
         title: 'BankEase',

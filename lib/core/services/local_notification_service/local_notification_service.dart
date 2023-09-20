@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:bankease/core/app_routes.dart';
 import 'package:bankease/core/injection.dart';
@@ -119,6 +120,8 @@ class LocalNotificationService {
       },
       onDidReceiveBackgroundNotificationResponse: notificationTapBackground,
     );
+
+    await _requestPermissions();
   }
 
   bool get didNotificationLaunchApp =>
@@ -180,13 +183,52 @@ class LocalNotificationService {
 
   Future<void> onSelectNotification(String? payload) async {
     if (payload != null) {
-      await Injection.getIt<RequestsRepo>().getRequestById(payload).then(
-          (value) => value.fold(
-                  (l) => debugPrint("Error in RequestRepo.getRequestById"),
+      await sl<RequestsRepo>().getRequestById(payload).then((value) => value
+              .fold((l) => debugPrint("Error in RequestRepo.getRequestById"),
                   (r) {
-                CustomNavigator.key.currentState
-                    ?.pushNamed(AppRoutes.requestDetails, arguments: r);
-              }));
+            CustomNavigator.key.currentState
+                ?.pushNamed(AppRoutes.requestDetails, arguments: r);
+          }));
     }
+  }
+
+  Future<void> _requestPermissions() async {
+    if (Platform.isIOS || Platform.isMacOS) {
+      await flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+              IOSFlutterLocalNotificationsPlugin>()
+          ?.requestPermissions(
+            alert: true,
+            badge: true,
+            sound: true,
+          );
+      await flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+              MacOSFlutterLocalNotificationsPlugin>()
+          ?.requestPermissions(
+            alert: true,
+            badge: true,
+            sound: true,
+          );
+    } else if (Platform.isAndroid) {
+      final AndroidFlutterLocalNotificationsPlugin? androidImplementation =
+          flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>();
+
+      await androidImplementation?.requestPermission();
+    }
+  }
+
+  bool isAndroidPermissionGranted() {
+    if (!Platform.isAndroid) {
+      return false;
+    }
+    bool? granted;
+    flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.areNotificationsEnabled()
+        .then((value) => granted = value);
+    return granted ?? false;
   }
 }

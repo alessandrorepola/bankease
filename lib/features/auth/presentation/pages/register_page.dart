@@ -17,7 +17,7 @@ class RegisterPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (BuildContext context) {
-        return Injection.getIt.get<RegisterBloc>();
+        return sl<RegisterBloc>();
       },
       child: RegisterForm(),
     );

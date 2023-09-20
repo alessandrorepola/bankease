@@ -16,7 +16,7 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (BuildContext context) {
-        return Injection.getIt.get<LoginBloc>();
+        return sl<LoginBloc>();
       },
       child: LoginForm(),
     );

@@ -6,7 +6,7 @@ import 'package:bankease/features/requests/domain/repositories/requests_repo.dar
 import 'package:dartz/dartz.dart';
 
 class GetRequestUseCase implements FailureUseCase<Request, String> {
-  final RequestsRepo requestsRepo = Injection.getIt.get<RequestsRepo>();
+  final RequestsRepo requestsRepo = sl<RequestsRepo>();
 
   @override
   Future<Either<Failure, Request>> call(String params) {

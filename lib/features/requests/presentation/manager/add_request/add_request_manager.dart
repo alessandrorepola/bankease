@@ -10,7 +10,7 @@ final addRequestProvider =
     StateNotifierProvider.autoDispose<AddRequestManager, AddRequestState>(
         (ref) {
   return AddRequestManager(AddRequestsUseCase(
-    Injection.getIt.get<RequestsRepo>(),
+    sl<RequestsRepo>(),
   ));
 });
 
@@ -39,8 +39,7 @@ class AddRequestManager extends StateNotifier<AddRequestState> {
     ));
     result.fold(
         (l) => null,
-        (r) => Injection.getIt
-            .get<LocalNotificationService>()
+        (r) => sl<LocalNotificationService>()
             .scheduleNotificationWhenThirtyMinutsLeftFrom(requestDT, r.id));
   }
 }

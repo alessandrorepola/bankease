@@ -10,7 +10,9 @@ class AppRoutes {
   static const String home = '/';
   static const String login = '/login';
   static const String register = '/register';
+  static const String settings = '/settings';
   static const String requestDetails = '/request_details';
+
   String? initialRoute;
 
   AppRoutes(this.firebaseAuth) {

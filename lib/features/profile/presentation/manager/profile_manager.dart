@@ -10,8 +10,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 final profileProvider =
     ChangeNotifierProvider.autoDispose<ProfileProvider>((ref) {
   return ProfileProvider(
-    GetProfileUseCase(Injection.getIt.get<AuthRepo>()),
-    LogoutUseCase(Injection.getIt.get<AuthRepo>()),
+    GetProfileUseCase(sl<AuthRepo>()),
+    LogoutUseCase(sl<AuthRepo>()),
   );
 });
 
