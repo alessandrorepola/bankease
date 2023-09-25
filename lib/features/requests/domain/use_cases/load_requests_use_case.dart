@@ -9,6 +9,6 @@ class LoadRequestsUseCase implements StreamUseCase<List<Request>, NoParams> {
 
   @override
   Stream<List<Request>> call(params) {
-    return _requestsRepo.listenRequests();
+    return _requestsRepo.getRequests();
   }
 }

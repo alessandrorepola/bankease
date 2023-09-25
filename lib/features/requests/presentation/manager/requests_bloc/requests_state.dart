@@ -1,48 +1,43 @@
 part of 'requests_bloc.dart';
 
-abstract class RequestsState extends Equatable {
-  const RequestsState();
-}
+enum RequestsStatus { initial, loading, success, failure }
 
-class RequestsInitial extends RequestsState {
-  @override
-  List<Object> get props => [];
-}
+final class RequestsState extends Equatable {
+  const RequestsState({
+    this.status = RequestsStatus.initial,
+    this.requests = const [],
+    this.filter = RequestsViewFilter.all,
+    this.lastDeletedRequest,
+  });
 
-// Requests loadinginprogress
-class RequestsLoadInProgress extends RequestsState {
-  @override
-  List<Object> get props => [];
-}
-
-class RequestsLoadSuccess extends RequestsState {
+  final RequestsStatus status;
   final List<Request> requests;
+  final RequestsViewFilter filter;
+  final Request? lastDeletedRequest;
 
-  const RequestsLoadSuccess(this.requests);
+  Iterable<Request> get filteredRequests => filter.applyAll(requests);
 
-  // copy with
-  RequestsLoadSuccess copyWith({List<Request>? requests}) {
-    return RequestsLoadSuccess(requests ?? this.requests);
+  RequestsState copyWith({
+    RequestsStatus Function()? status,
+    List<Request> Function()? requests,
+    RequestsViewFilter Function()? filter,
+    Request? Function()? lastDeletedRequest,
+  }) {
+    return RequestsState(
+      status: status != null ? status() : this.status,
+      requests: requests != null ? requests() : this.requests,
+      filter: filter != null ? filter() : this.filter,
+      lastDeletedRequest: lastDeletedRequest != null
+          ? lastDeletedRequest()
+          : this.lastDeletedRequest,
+    );
   }
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      super == other &&
-          other is RequestsLoadSuccess &&
-          runtimeType == other.runtimeType &&
-          requests == other.requests;
-
-  @override
-  int get hashCode => super.hashCode ^ requests.hashCode;
-
-  @override
-  List<Object> get props => [requests];
-}
-
-class RequestsLoadFailure extends RequestsState {
-  const RequestsLoadFailure();
-
-  @override
-  List<Object> get props => [];
+  List<Object?> get props => [
+        status,
+        requests,
+        filter,
+        lastDeletedRequest,
+      ];
 }

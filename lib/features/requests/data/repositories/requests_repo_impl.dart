@@ -32,7 +32,7 @@ class RequestsRepoImpl implements RequestsRepo {
           userId: _authRepo.getLoggedUser().id));
       return right(result);
     } catch (e) {
-      return left(UnexpectedFailure());
+      return left(Failure());
     }
   }
 
@@ -42,7 +42,7 @@ class RequestsRepoImpl implements RequestsRepo {
       await _remoteDataSource.delete(id);
       return right(unit);
     } catch (e) {
-      return left(UnexpectedFailure());
+      return left(RequestNotFoundFailure());
     }
   }
 
@@ -51,13 +51,13 @@ class RequestsRepoImpl implements RequestsRepo {
     RequestRemoteDataModel? requestModel = await _remoteDataSource.getOne(id);
 
     if (requestModel == null) {
-      return left(DocumentNotFoundFailure());
+      return left(RequestNotFoundFailure());
     }
 
     final branch = await _branchesRepo.getBranchById(requestModel.branchId);
 
     if (branch == null) {
-      return left(DocumentNotFoundFailure());
+      return left(BranchNotFoundFailure());
     }
 
     final userEntity = await _authRepo.getUserInfo();
@@ -65,7 +65,7 @@ class RequestsRepoImpl implements RequestsRepo {
   }
 
   @override
-  Stream<List<Request>> listenRequests() {
+  Stream<List<Request>> getRequests() {
     return _remoteDataSource.collectionWithConverter
         .where('userId', isEqualTo: _authRepo.getLoggedUser().id)
         .snapshots()
@@ -83,5 +83,16 @@ class RequestsRepoImpl implements RequestsRepo {
       }));
       return requests.nonNulls.toList();
     });
+  }
+
+  @override
+  Future<Either<Failure, Unit>> save(Request request) async {
+    try {
+      await _remoteDataSource
+          .add(RemoteDomainMapper.toRequestRemoteDataModel(request));
+      return right(unit);
+    } catch (e) {
+      return left(Failure());
+    }
   }
 }

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:bankease/core/app_routes.dart';
@@ -150,6 +151,7 @@ class LocalNotificationService {
 
   Future<void> scheduleNotificationWhenThirtyMinutsLeftFrom(
       DateTime dt, String id) async {
+    log(tz.TZDateTime.from(dt, tz.local).toString());
     await flutterLocalNotificationsPlugin.zonedSchedule(
         id.hashCode,
         'Reminder',

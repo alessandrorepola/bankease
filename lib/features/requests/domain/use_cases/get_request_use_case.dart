@@ -6,10 +6,10 @@ import 'package:bankease/features/requests/domain/repositories/requests_repo.dar
 import 'package:dartz/dartz.dart';
 
 class GetRequestUseCase implements FailureUseCase<Request, String> {
-  final RequestsRepo requestsRepo = sl<RequestsRepo>();
+  final RequestsRepo _requestsRepo = sl<RequestsRepo>();
 
   @override
   Future<Either<Failure, Request>> call(String params) {
-    return requestsRepo.getRequestById(params);
+    return _requestsRepo.getRequestById(params);
   }
 }

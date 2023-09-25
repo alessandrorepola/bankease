@@ -40,6 +40,6 @@ class AddRequestManager extends StateNotifier<AddRequestState> {
     result.fold(
         (l) => null,
         (r) => sl<LocalNotificationService>()
-            .scheduleNotificationWhenThirtyMinutsLeftFrom(requestDT, r.id));
+            .scheduleNotificationWhenThirtyMinutsLeftFrom(serviceDT, r.id));
   }
 }

@@ -5,6 +5,10 @@ import 'package:bankease/features/requests/domain/entities/branch.dart';
 
 enum Status { pending, complete, cancelled }
 
+extension on Status {
+  int compareTo(Status other) => index.compareTo(other.index);
+}
+
 enum Service { consulting, finantial, savings }
 
 class Request extends Equatable {
@@ -39,6 +43,8 @@ class Request extends Equatable {
 
   String get serviceDay =>
       'Day: ${serviceDT.year}-${serviceDT.month.toString().padLeft(2, '0')}-${serviceDT.day.toString().padLeft(2, '0')}';
+
+  Duration get remainingTime => serviceDT.difference(DateTime.now());
 
   Request copyWith(
       {String? id,

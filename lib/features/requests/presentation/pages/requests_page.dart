@@ -1,84 +1,121 @@
 import 'package:bankease/core/app_routes.dart';
-import 'package:bankease/core/services/local_notification_service/local_notification_service.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bankease/core/injection.dart';
-import 'package:bankease/features/requests/presentation/dialogs/add_request_dialog.dart';
+import 'package:bankease/features/home/widgets/home_drawer.dart';
 import 'package:bankease/features/requests/presentation/manager/requests_bloc/requests_bloc.dart';
 import 'package:bankease/features/requests/presentation/widgets/request_card.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:bankease/features/requests/presentation/widgets/requests_filter_button.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RequestsPage extends StatelessWidget {
-  const RequestsPage({Key? key}) : super(key: key);
+  const RequestsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<RequestsBloc>(
-      create: (BuildContext context) => sl<RequestsBloc>(),
-      child: const RequestsList(),
+    return BlocProvider(
+      create: (context) =>
+          sl<RequestsBloc>()..add(const RequestsSubscriptionRequested()),
+      child: const RequestsView(),
     );
   }
 }
 
-class RequestsList extends StatelessWidget {
-  const RequestsList({Key? key}) : super(key: key);
+class RequestsView extends StatelessWidget {
+  const RequestsView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final state = context.watch<RequestsBloc>().state;
-    if (state is RequestsLoadInProgress) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
-    } else if (state is RequestsLoadSuccess) {
-      final requests = state.requests;
-      return Stack(
-        children: [
-          ListView.separated(
-            padding: EdgeInsets.symmetric(vertical: 25.h, horizontal: 16.w),
-            itemCount: requests.length,
-            itemBuilder: (BuildContext context, int index) {
-              final request = requests[index];
-              return RequestCard(
-                request: request,
-                index: index,
-                onTap: () => Navigator.of(context)
-                    .pushNamed(AppRoutes.requestDetails, arguments: request),
-              );
-            },
-            separatorBuilder: (BuildContext context, int index) {
-              return SizedBox(
-                height: 16.h,
-              );
-            },
-          ),
-          Positioned(
-            right: 25.w,
-            bottom: 80.h,
-            child: FloatingActionButton(
-              child: const Icon(Icons.add, color: Colors.white),
-              onPressed: () {
-                showDialog(
-                    context: context, builder: (_) => AddRequestDialog());
-              },
-            ),
-          ),
-          Positioned(
-            right: 25.w,
-            bottom: 30.h,
-            child: ElevatedButton(
-              child: const Text('Notifica'),
-              onPressed: () {
-                sl<LocalNotificationService>().showNotification();
-              },
-            ),
-          )
+    return Scaffold(
+      drawer: const HomeDrawer(),
+      appBar: AppBar(
+        title: const Text('Requests'),
+        actions: const [
+          RequestsFilterButton(),
         ],
-      );
-    } else {
-      return const Center(
-        child: Text('Error'),
-      );
-    }
+      ),
+      body: MultiBlocListener(
+        listeners: [
+          BlocListener<RequestsBloc, RequestsState>(
+            listenWhen: (previous, current) =>
+                previous.status != current.status,
+            listener: (context, state) {
+              if (state.status == RequestsStatus.failure) {
+                ScaffoldMessenger.of(context)
+                  ..hideCurrentSnackBar()
+                  ..showSnackBar(
+                    const SnackBar(
+                      content:
+                          Text('An error occurred while loading requests.'),
+                    ),
+                  );
+              }
+            },
+          ),
+          BlocListener<RequestsBloc, RequestsState>(
+            listenWhen: (previous, current) =>
+                previous.lastDeletedRequest != current.lastDeletedRequest &&
+                current.lastDeletedRequest != null,
+            listener: (context, state) {
+              final messenger = ScaffoldMessenger.of(context);
+              messenger
+                ..hideCurrentSnackBar()
+                ..showSnackBar(
+                  SnackBar(
+                    content: const Text('Request deleted.'),
+                    action: SnackBarAction(
+                      label: 'Undo',
+                      onPressed: () {
+                        messenger.hideCurrentSnackBar();
+                        context
+                            .read<RequestsBloc>()
+                            .add(const RequestsUndoDeletionRequested());
+                      },
+                    ),
+                  ),
+                );
+            },
+          ),
+        ],
+        child: BlocBuilder<RequestsBloc, RequestsState>(
+          builder: (context, state) {
+            if (state.requests.isEmpty) {
+              if (state.status == RequestsStatus.loading) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (state.status != RequestsStatus.success) {
+                return const SizedBox();
+              } else {
+                return Center(
+                  child: Text(
+                    'No requests found with the selected filters.',
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                );
+              }
+            }
+
+            return Scrollbar(
+              child: ListView(
+                children: [
+                  for (final request in state.filteredRequests)
+                    RequestCard(
+                      request: request,
+                      onDismissed: (_) async {
+                        context
+                            .read<RequestsBloc>()
+                            .add(RequestDeleted(request));
+                      },
+                      onTap: () {
+                        Navigator.of(context).pushNamed(
+                            AppRoutes.requestDetails,
+                            arguments: request);
+                      },
+                    ),
+                ],
+              ),
+            );
+          },
+        ),
+      ),
+    );
   }
 }

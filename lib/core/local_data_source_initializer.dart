@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bankease/core/constants/sqflite_constants.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -15,13 +17,13 @@ class LocalDataSourceInitializer {
   Future<Database> openDatabaseConnection() async {
     var databasesPath = await getDatabasesPath();
     String path = join(databasesPath, '${SqfLiteConstants.requestsTable}.db');
-    print(path);
+    log(path);
     database = await openDatabase(path, version: 11,
         onCreate: (Database db, int version) async {
       await createTable(db);
-      print('onCreate');
+      log('onCreate');
     }, onUpgrade: (db, ___, __) async {
-      print('onUpgrade');
+      log('onUpgrade');
       await db
           .execute('DROP TABLE IF EXISTS `${SqfLiteConstants.requestsTable}`');
       await createTable(db);

@@ -1,3 +1,4 @@
+import 'package:bankease/core/failures/failures.dart';
 import 'package:bankease/features/requests/domain/entities/branch.dart';
 import 'package:bankease/features/requests/domain/use_cases/add_request_use_case.dart';
 
@@ -10,3 +11,6 @@ abstract class BranchesRepo {
 
   Future<List<Branch>> getAll();
 }
+
+/// Error when a [Branch] with a given id is not found.
+class BranchNotFoundFailure implements Failure {}

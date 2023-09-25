@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 
 class ProfileButton extends StatelessWidget {
   const ProfileButton(
-      {Key? key,
+      {super.key,
       required this.onPressed,
       required this.text,
-      required this.iconData})
-      : super(key: key);
+      required this.iconData});
   final VoidCallback onPressed;
   final String text;
   final IconData iconData;
@@ -15,7 +14,12 @@ class ProfileButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        FloatingActionButton(
+        ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Theme.of(context).colorScheme.secondary,
+              shape: const CircleBorder(),
+              minimumSize: const Size(50, 50),
+            ),
             onPressed: (onPressed),
             child: Icon(
               iconData,

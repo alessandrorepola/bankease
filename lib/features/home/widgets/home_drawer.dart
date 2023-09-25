@@ -1,9 +1,10 @@
 import 'package:app_settings/app_settings.dart';
 import 'package:bankease/core/app_routes.dart';
-import 'package:bankease/features/home/presentation/manager/home_manager.dart';
+import 'package:bankease/features/home/presentation/manager/home_cubit.dart';
 import 'package:bankease/features/home/widgets/drawer_tile.dart';
 import 'package:bankease/features/profile/presentation/manager/profile_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -41,22 +42,23 @@ class HomeDrawer extends ConsumerWidget {
             )
           ]),
           DrawerTile(
-              iconData: Icons.home,
-              text: 'Home',
+              iconData: Icons.list_rounded,
+              text: 'Requests',
               onTap: () {
-                ref.read(homeProvider.notifier).changePageIndex(0);
+                context.read<HomeCubit>().setTab(HomeTab.requests);
               }),
           DrawerTile(
               iconData: Icons.person,
               text: 'Account',
               onTap: () {
-                ref.read(homeProvider.notifier).changePageIndex(1);
+                context.read<HomeCubit>().setTab(HomeTab.account);
               }),
           DrawerTile(
             iconData: Icons.notifications,
             text: 'Notifications',
-            onTap: () =>
-                AppSettings.openAppSettings(type: AppSettingsType.notification),
+            onTap: () {
+              AppSettings.openAppSettings(type: AppSettingsType.notification);
+            },
           ),
           DrawerTile(
               iconData: Icons.logout,

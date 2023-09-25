@@ -45,7 +45,8 @@ class App extends StatelessWidget {
         locale: const Locale('it', 'IT'),
         routes: AppRoutes.routes,
         title: 'BankEase',
-        theme: AppTheme.lightTheme,
+        theme: AppTheme.light,
+        darkTheme: AppTheme.dark,
       ),
     );
   }

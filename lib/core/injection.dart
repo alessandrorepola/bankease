@@ -4,7 +4,8 @@ import 'package:bankease/features/requests/data/remote/data_sources/requests_rem
 import 'package:bankease/features/requests/data/repositories/branches_repo_impl.dart';
 import 'package:bankease/features/requests/data/repositories/requests_repo_impl.dart';
 import 'package:bankease/features/requests/domain/repositories/requests_repo.dart';
-import 'package:bankease/features/requests/domain/use_cases/load_requests_use_case.dart';
+import 'package:bankease/features/requests/domain/use_cases/delete_request_use_case.dart';
+import 'package:bankease/features/requests/domain/use_cases/undo_delete_request_use_case.dart';
 import 'package:bankease/features/requests/presentation/manager/requests_bloc/requests_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:bankease/core/app_routes.dart';
@@ -51,13 +52,26 @@ class Injection {
 
     // Blocs
     sl.registerFactory<RequestsBloc>(
-        () => RequestsBloc(LoadRequestsUseCase(sl<RequestsRepo>())));
-    sl.registerFactory<RegisterBloc>(() => RegisterBloc(RegisterUseCase(
+      () => RequestsBloc(
+        DeleteRequestUseCase(sl<RequestsRepo>()),
+        UndoDeleteRequestUseCase(sl<RequestsRepo>()),
+        requestsRepo: sl<RequestsRepo>(),
+      ),
+    );
+    sl.registerFactory<RegisterBloc>(
+      () => RegisterBloc(
+        RegisterUseCase(
           sl<AuthRepo>(),
-        )));
+        ),
+      ),
+    );
 
-    sl.registerFactory<LoginBloc>(() => LoginBloc(LoginUseCase(
+    sl.registerFactory<LoginBloc>(
+      () => LoginBloc(
+        LoginUseCase(
           sl<AuthRepo>(),
-        )));
+        ),
+      ),
+    );
   }
 }

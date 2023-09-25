@@ -1,4 +1,4 @@
-class AddRequestState {
+final class AddRequestState {
   final String? service;
   final String branchId;
 

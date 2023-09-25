@@ -1,4 +1,5 @@
 import 'package:bankease/features/requests/domain/entities/request.dart';
+import 'package:bankease/features/requests/presentation/widgets/remaining_time_widget.dart';
 import 'package:flutter/material.dart';
 
 class RequestDetailsPage extends StatelessWidget {
@@ -24,6 +25,7 @@ class RequestDetailsPage extends StatelessWidget {
             Text(request.requestDay),
             Text(request.serviceTime),
             Text(request.serviceDay),
+            RemainingTimeWidget(request: request),
             Text(request.branch.toString()),
           ],
         ),

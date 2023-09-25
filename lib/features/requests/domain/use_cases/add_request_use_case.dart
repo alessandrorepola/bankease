@@ -6,14 +6,14 @@ import 'package:bankease/features/requests/domain/repositories/requests_repo.dar
 
 class AddRequestsUseCase
     implements FailureUseCase<RequestRemoteDataModel, AddRequestParams> {
-  final RequestsRepo requestsRepo;
+  final RequestsRepo _requestsRepo;
 
-  AddRequestsUseCase(this.requestsRepo);
+  AddRequestsUseCase(this._requestsRepo);
 
   @override
   Future<Either<Failure, RequestRemoteDataModel>> call(
       AddRequestParams params) {
-    return requestsRepo.add(params);
+    return _requestsRepo.add(params);
   }
 }
 
