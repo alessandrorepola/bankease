@@ -9,14 +9,12 @@ import 'package:bankease/features/requests/domain/use_cases/undo_delete_request_
 import 'package:bankease/features/requests/presentation/manager/requests_bloc/requests_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:bankease/core/app_routes.dart';
-import 'package:bankease/core/local_data_source_initializer.dart';
 import 'package:bankease/features/auth/data/remote/data_sources/users_remote_data_source.dart';
 import 'package:bankease/features/auth/data/repositories/auth_repo_impl.dart';
 import 'package:bankease/features/auth/domain/use_cases/login_use_case.dart';
 import 'package:bankease/features/auth/domain/use_cases/register_use_case.dart';
 import 'package:bankease/features/auth/presentation/manager/login_bloc/login_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:sqflite/sqflite.dart';
 
 import '../features/auth/presentation/manager/register_bloc/register_bloc.dart';
 
@@ -24,13 +22,7 @@ final sl = GetIt.instance;
 
 class Injection {
   static setup() async {
-    openDatabase('path');
-    final LocalDataSourceInitializer localDataSourceInitializer =
-        LocalDataSourceInitializer();
-    await localDataSourceInitializer.openDatabaseConnection();
-
     // Dependecies
-    sl.registerSingleton<Database>(localDataSourceInitializer.database);
     sl.registerSingleton<FirebaseAuth>(FirebaseAuth.instance);
 
     // Services
@@ -44,10 +36,7 @@ class Injection {
     );
     sl.registerLazySingleton<RequestsRepo>(
       () => RequestsRepoImpl(
-          RequestsRemoteDataSource(),
-          // NetworkInfoImpl(InternetConnectionChecker()),
-          sl<AuthRepo>(),
-          BranchesRepoImpl()),
+          RequestsRemoteDataSource(), sl<AuthRepo>(), BranchesRepoImpl()),
     );
 
     // Blocs

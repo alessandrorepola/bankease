@@ -42,16 +42,16 @@ class Request extends Equatable {
             serviceDT ?? Utils.serviceScheduler(requestDT ?? DateTime.now());
 
   String get requestTime =>
-      'Time: ${requestDT.hour.toString().padLeft(2, '0')}:${requestDT.minute.toString().padLeft(2, '0')}:${requestDT.second.toString().padLeft(2, '0')}';
+      '${requestDT.hour.toString().padLeft(2, '0')}:${requestDT.minute.toString().padLeft(2, '0')}';
 
   String get requestDay =>
-      'Day: ${requestDT.year}-${requestDT.month.toString().padLeft(2, '0')}-${requestDT.day.toString().padLeft(2, '0')}';
+      '${requestDT.year}-${requestDT.month.toString().padLeft(2, '0')}-${requestDT.day.toString().padLeft(2, '0')}';
 
   String get serviceTime =>
-      'Time: ${serviceDT.hour.toString().padLeft(2, '0')}:${serviceDT.minute.toString().padLeft(2, '0')}:${serviceDT.second.toString().padLeft(2, '0')}';
+      '${serviceDT.hour.toString().padLeft(2, '0')}:${serviceDT.minute.toString().padLeft(2, '0')}';
 
   String get serviceDay =>
-      'Day: ${serviceDT.year}-${serviceDT.month.toString().padLeft(2, '0')}-${serviceDT.day.toString().padLeft(2, '0')}';
+      '${serviceDT.year}-${serviceDT.month.toString().padLeft(2, '0')}-${serviceDT.day.toString().padLeft(2, '0')}';
 
   Duration get remainingTime => serviceDT.difference(DateTime.now());
 
