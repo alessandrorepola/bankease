@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:bankease/core/app_routes.dart';
 import 'package:bankease/core/injection.dart';
 import 'package:bankease/core/navigator.dart';
+import 'package:bankease/features/requests/domain/entities/request.dart';
 import 'package:bankease/features/requests/domain/repositories/requests_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -150,14 +151,13 @@ class LocalNotificationService {
   }
 
   Future<void> scheduleNotificationWhenThirtyMinutsLeftFrom(
-      DateTime dt, String id) async {
+      DateTime dt, Request request) async {
     log(tz.TZDateTime.from(dt, tz.local).toString());
     await flutterLocalNotificationsPlugin.zonedSchedule(
-        id.hashCode,
-        'Reminder',
-        'Your appointment is less than 30 minutes away!',
+        request.id.hashCode,
+        '${request.service.parseString()} service',
+        'Reminder for your ${request.service.parseString()} service at ${request.requestTime}',
         tz.TZDateTime.from(dt, tz.local).subtract(const Duration(minutes: 30)),
-        // tz.TZDateTime.from(dt, tz.local).add(const Duration(seconds: 3)),
         const NotificationDetails(
             android: AndroidNotificationDetails(
                 'bankease_local_notification_id',
@@ -167,7 +167,7 @@ class LocalNotificationService {
         androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime,
-        payload: id);
+        payload: request.id);
   }
 
   Future<List<PendingNotificationRequest>>

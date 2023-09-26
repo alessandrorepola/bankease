@@ -5,11 +5,20 @@ import 'package:bankease/features/requests/domain/entities/branch.dart';
 
 enum Status { pending, complete, cancelled }
 
-extension on Status {
-  int compareTo(Status other) => index.compareTo(other.index);
-}
-
 enum Service { consulting, finantial, savings }
+
+extension StringParsing on Service {
+  String parseString() {
+    switch (this) {
+      case Service.consulting:
+        return "Consulting";
+      case Service.finantial:
+        return "Finantial";
+      case Service.savings:
+        return "Savings";
+    }
+  }
+}
 
 class Request extends Equatable {
   final String id;

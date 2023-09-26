@@ -21,7 +21,7 @@ class UndoDeleteRequestUseCase implements FailureUseCase<Unit, Request> {
       (l) => null,
       (r) => sl<LocalNotificationService>()
           .scheduleNotificationWhenThirtyMinutsLeftFrom(
-              request.serviceDT, request.id),
+              request.serviceDT, request),
     );
     return result;
   }

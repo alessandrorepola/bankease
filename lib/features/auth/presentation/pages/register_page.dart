@@ -58,12 +58,12 @@ class RegisterForm extends StatelessWidget {
               child: Column(
                 children: [
                   const SizedBox(height: 120),
-                  SizedBox(
-                    width: 60,
-                    height: 60,
-                    child: Image.asset('images/icon.png'),
+                  Image.asset(
+                    'images/icon.png',
+                    width: 80,
+                    height: 80,
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 20),
                   Text(
                     "Create your account",
                     style: Theme.of(context).textTheme.bodyMedium,

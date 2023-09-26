@@ -18,8 +18,7 @@ class RequestsRepoImpl implements RequestsRepo {
   RequestsRepoImpl(this._remoteDataSource, this._authRepo, this._branchesRepo);
 
   @override
-  Future<Either<Failure, RequestRemoteDataModel>> add(
-      AddRequestParams params) async {
+  Future<Either<Failure, Request>> add(AddRequestParams params) async {
     try {
       final docId = await _remoteDataSource.getDocumentId();
       final result = await _remoteDataSource.add(RequestRemoteDataModel(
@@ -30,7 +29,13 @@ class RequestsRepoImpl implements RequestsRepo {
           status: params.state,
           branchId: params.branchId,
           userId: _authRepo.getLoggedUser().id));
-      return right(result);
+      return right(
+        RemoteDomainMapper.toDomain(
+          result,
+          await _authRepo.getUserInfo(),
+          (await _branchesRepo.getBranchById(result.branchId))!,
+        ),
+      );
     } catch (e) {
       return left(Failure());
     }

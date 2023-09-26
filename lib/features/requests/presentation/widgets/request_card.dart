@@ -1,6 +1,7 @@
 import 'package:bankease/features/requests/presentation/widgets/remaining_time_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:bankease/features/requests/domain/entities/request.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class RequestCard extends StatelessWidget {
   const RequestCard({
@@ -19,45 +20,65 @@ class RequestCard extends StatelessWidget {
     final theme = Theme.of(context);
     final captionColor = theme.textTheme.bodySmall?.color;
 
-    return Dismissible(
-      key: UniqueKey(),
-      onDismissed: onDismissed,
-      direction: DismissDirection.endToStart,
-      confirmDismiss: (DismissDirection direction) async {
-        if (request.remainingTime > const Duration(minutes: 30) ||
-            request.status == Status.complete) {
-          return await _confirmDismissDialog(context);
-        }
-        return await _unableToDismissWarning(context);
-      },
-      background: Container(
-        alignment: Alignment.centerRight,
-        color: theme.colorScheme.error,
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: const Icon(
-          Icons.delete,
-          color: Color(0xAAFFFFFF),
-        ),
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 6.w),
+      decoration: BoxDecoration(
+        color: theme.canvasColor,
+        boxShadow: [
+          BoxShadow(
+            color: theme.shadowColor,
+            blurRadius: 8,
+            offset: const Offset(0, 3),
+          )
+        ],
+        borderRadius: BorderRadius.circular(18),
       ),
-      child: ListTile(
-        onTap: onTap,
-        title: Text(
-          request.service.name,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: request.status != Status.complete
-              ? null
-              : TextStyle(
-                  color: captionColor,
-                  decoration: TextDecoration.lineThrough,
-                ),
+      child: Dismissible(
+        key: UniqueKey(),
+        onDismissed: onDismissed,
+        direction: DismissDirection.endToStart,
+        confirmDismiss: (DismissDirection direction) async {
+          if (request.remainingTime > const Duration(minutes: 30) ||
+              request.status == Status.complete) {
+            return await _confirmDismissDialog(context);
+          }
+          return await _unableToDismissWarning(context);
+        },
+        background: Container(
+          alignment: Alignment.centerRight,
+          color: theme.colorScheme.error,
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: const Icon(
+            Icons.delete,
+            color: Color(0xAAFFFFFF),
+          ),
         ),
-        subtitle: Text(
-          request.branch.toString(),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
+        child: ListTile(
+          onTap: onTap,
+          title: Text(
+            request.service.parseString(),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: request.status != Status.complete
+                ? const TextStyle(
+                    fontSize: 18,
+                  )
+                : TextStyle(
+                    fontSize: 18,
+                    color: captionColor,
+                    decoration: TextDecoration.lineThrough,
+                  ),
+          ),
+          subtitle: Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: Text(
+              request.branch.institute,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          leading: RemainingTimeWidget(request: request),
         ),
-        leading: RemainingTimeWidget(request: request),
       ),
     );
   }

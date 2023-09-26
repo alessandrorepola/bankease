@@ -2,7 +2,7 @@ import 'package:bankease/features/requests/domain/entities/request.dart';
 import 'package:bankease/features/requests/domain/repositories/requests_repo.dart';
 import 'package:bankease/features/requests/domain/use_cases/delete_request_use_case.dart';
 import 'package:bankease/features/requests/domain/use_cases/undo_delete_request_use_case.dart';
-import 'package:bankease/features/requests/presentation/model/requests_view_filter.dart';
+import 'package:bankease/features/requests/presentation/utils/requests_view_filter.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 

@@ -40,7 +40,6 @@ class AddRequestDialog extends ConsumerWidget {
                     ),
                     child: DropdownButtonFormField(
                       autovalidateMode: AutovalidateMode.onUserInteraction,
-                      dropdownColor: Colors.white,
                       icon: const Icon(Icons.arrow_drop_down),
                       validator: (value) {
                         if (value == null) {

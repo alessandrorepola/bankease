@@ -12,18 +12,61 @@ class RemainingTimeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-        stream: const Ticker().tick(),
-        builder: (context, snapshot) {
-          final remainingTime = _request.remainingTime.inMinutes;
-          if (remainingTime > 0) {
-            return Text(remainingTime.toString());
-          }
-          if (_request.status == Status.pending) {
-            sl<RequestsBloc>().add(
-                RequestCompletionEvent(request: _request, isCompleted: true));
-          }
-          return const Text('Completed');
-        });
+    return SizedBox(
+      width: 70,
+      height: 70,
+      child: StreamBuilder(
+          stream: const Ticker().tick(),
+          builder: (context, snapshot) {
+            final remainingTime = _request.remainingTime.inMinutes;
+            if (remainingTime > 30) {
+              return TimerWidget(
+                remainingTime: '$remainingTime min',
+                color: Colors.orange,
+              );
+            }
+            if (remainingTime > 0) {
+              return TimerWidget(
+                remainingTime: '$remainingTime min',
+                color: Colors.red,
+              );
+            }
+            if (_request.status == Status.pending) {
+              sl<RequestsBloc>().add(
+                  RequestCompletionEvent(request: _request, isCompleted: true));
+            }
+            return const TimerWidget(
+                remainingTime: 'Completed', color: Colors.green);
+          }),
+    );
+  }
+}
+
+class TimerWidget extends StatelessWidget {
+  const TimerWidget({
+    super.key,
+    required this.remainingTime,
+    required this.color,
+  });
+
+  final String remainingTime;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Icon(
+          color: color,
+          size: 35,
+          Icons.timer_outlined,
+        ),
+        const Spacer(),
+        Text(
+          remainingTime,
+          style: TextStyle(color: color),
+        ),
+      ],
+    );
   }
 }

@@ -1,18 +1,16 @@
-import 'package:bankease/features/requests/data/remote/models/request_remote_data_model.dart';
+import 'package:bankease/features/requests/domain/entities/request.dart';
 import 'package:dartz/dartz.dart';
 import 'package:bankease/core/failures/failures.dart';
 import 'package:bankease/core/use_case/use_case.dart';
 import 'package:bankease/features/requests/domain/repositories/requests_repo.dart';
 
-class AddRequestsUseCase
-    implements FailureUseCase<RequestRemoteDataModel, AddRequestParams> {
+class AddRequestsUseCase implements FailureUseCase<Request, AddRequestParams> {
   final RequestsRepo _requestsRepo;
 
   AddRequestsUseCase(this._requestsRepo);
 
   @override
-  Future<Either<Failure, RequestRemoteDataModel>> call(
-      AddRequestParams params) {
+  Future<Either<Failure, Request>> call(AddRequestParams params) {
     return _requestsRepo.add(params);
   }
 }

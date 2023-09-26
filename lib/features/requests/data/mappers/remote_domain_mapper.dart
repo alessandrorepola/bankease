@@ -9,8 +9,8 @@ class RemoteDomainMapper {
     return Request(
       id: remoteData.id,
       user: user,
-      service: Service.values
-          .firstWhere((element) => element.name == remoteData.service),
+      service: Service.values.firstWhere(
+          (element) => element.name == remoteData.service.toLowerCase()),
       status: Status.values
           .firstWhere((element) => element.name == remoteData.status),
       requestDT: DateTime.tryParse(remoteData.requestDT),
@@ -22,7 +22,7 @@ class RemoteDomainMapper {
   static RequestRemoteDataModel toRequestRemoteDataModel(Request request) {
     return RequestRemoteDataModel(
         id: request.id,
-        service: request.service.name,
+        service: request.service.parseString(),
         requestDT: request.requestDT.toString(),
         serviceDT: request.serviceDT.toString(),
         status: request.status.name,

@@ -6,6 +6,7 @@ import 'package:bankease/features/requests/presentation/widgets/request_card.dar
 import 'package:bankease/features/requests/presentation/widgets/requests_filter_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class RequestsPage extends StatelessWidget {
   const RequestsPage({super.key});
@@ -94,23 +95,25 @@ class RequestsView extends StatelessWidget {
             }
 
             return Scrollbar(
-              child: ListView(
-                children: [
-                  for (final request in state.filteredRequests)
-                    RequestCard(
-                      request: request,
-                      onDismissed: (_) async {
-                        context
-                            .read<RequestsBloc>()
-                            .add(RequestDeleted(request));
-                      },
-                      onTap: () {
-                        Navigator.of(context).pushNamed(
-                            AppRoutes.requestDetails,
-                            arguments: request);
-                      },
-                    ),
-                ],
+              child: ListView.separated(
+                padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 5.w),
+                itemBuilder: (context, index) {
+                  final request = state.filteredRequests.elementAt(index);
+                  return RequestCard(
+                    request: request,
+                    onDismissed: (_) async {
+                      context.read<RequestsBloc>().add(RequestDeleted(request));
+                    },
+                    onTap: () {
+                      Navigator.of(context).pushNamed(AppRoutes.requestDetails,
+                          arguments: request);
+                    },
+                  );
+                },
+                itemCount: state.filteredRequests.length,
+                separatorBuilder: (context, index) => SizedBox(
+                  height: 10.h,
+                ),
               ),
             );
           },

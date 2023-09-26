@@ -1,5 +1,5 @@
 import 'package:bankease/features/requests/presentation/manager/requests_bloc/requests_bloc.dart';
-import 'package:bankease/features/requests/presentation/model/requests_view_filter.dart';
+import 'package:bankease/features/requests/presentation/utils/requests_view_filter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
