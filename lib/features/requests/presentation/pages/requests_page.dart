@@ -79,7 +79,7 @@ class RequestsView extends StatelessWidget {
         ],
         child: BlocBuilder<RequestsBloc, RequestsState>(
           builder: (context, state) {
-            if (state.requests.isEmpty) {
+            if (state.filteredRequests.isEmpty) {
               if (state.status == RequestsStatus.loading) {
                 return const Center(child: CircularProgressIndicator());
               } else if (state.status != RequestsStatus.success) {

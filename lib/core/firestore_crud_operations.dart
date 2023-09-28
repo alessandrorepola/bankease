@@ -30,15 +30,12 @@ class FirestoreCrudOperations<T extends FirestoreDocumentModel> {
   late final CollectionReference<T> _collectionWithConverter;
   late final CollectionReference<Map<String, dynamic>> _collection;
 
-  DocumentReference<Map<String, dynamic>> getDocumentReference(String id) {
-    return _collection.doc(id);
-  }
-
   CollectionReference<T> get collectionWithConverter =>
       _collectionWithConverter;
 
-  Stream<List<T>> listen() {
-    return _collectionWithConverter
+  Stream<List<T>> listen([Query<T>? query]) {
+    final collection = query ?? _collectionWithConverter;
+    return collection
         .snapshots()
         .map((event) => event.docs.map((e) => e.data()).toList());
   }
@@ -70,14 +67,8 @@ class FirestoreCrudOperations<T extends FirestoreDocumentModel> {
     return get.data();
   }
 
-  Future<DocumentSnapshot<T>> getDocument(
-    String id,
-  ) async {
-    final get = await _collectionWithConverter.doc(id).get();
-    return get;
-  }
-
-  Future<String> getDocumentId() async {
+  /// Create a new unique id if not exists and return it
+  Future<String> newId() async {
     return _collectionWithConverter.doc().id;
   }
 }

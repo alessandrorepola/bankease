@@ -56,7 +56,7 @@ class RequestCard extends StatelessWidget {
         child: ListTile(
           onTap: onTap,
           title: Text(
-            request.service.parseString(),
+            request.service.name,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: request.status != Status.complete

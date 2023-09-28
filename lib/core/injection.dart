@@ -35,8 +35,8 @@ class Injection {
           UsersRemoteDataSource(sl<FirebaseAuth>()), sl<FirebaseAuth>()),
     );
     sl.registerLazySingleton<RequestsRepo>(
-      () => RequestsRepoImpl(
-          RequestsRemoteDataSource(), sl<AuthRepo>(), BranchesRepoImpl()),
+      () => RequestsRepoImpl(RequestsRemoteDataSource(sl<FirebaseAuth>()),
+          sl<AuthRepo>(), BranchesRepoImpl()),
     );
 
     // Blocs

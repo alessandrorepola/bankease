@@ -155,8 +155,8 @@ class LocalNotificationService {
     log(tz.TZDateTime.from(dt, tz.local).toString());
     await flutterLocalNotificationsPlugin.zonedSchedule(
         request.id.hashCode,
-        '${request.service.parseString()} service',
-        'Reminder for your ${request.service.parseString()} service at ${request.requestTime}',
+        '${request.service.name} service',
+        'Reminder for your ${request.service.name} service at ${request.requestTime}',
         tz.TZDateTime.from(dt, tz.local).subtract(const Duration(minutes: 30)),
         const NotificationDetails(
             android: AndroidNotificationDetails(

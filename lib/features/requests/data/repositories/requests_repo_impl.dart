@@ -20,9 +20,9 @@ class RequestsRepoImpl implements RequestsRepo {
   @override
   Future<Either<Failure, Request>> add(AddRequestParams params) async {
     try {
-      final docId = await _remoteDataSource.getDocumentId();
+      final id = await _remoteDataSource.newId();
       final result = await _remoteDataSource.add(RequestRemoteDataModel(
-          id: docId,
+          id: id,
           service: params.service,
           requestDT: params.requestDT,
           serviceDT: params.serviceDT,
@@ -71,22 +71,16 @@ class RequestsRepoImpl implements RequestsRepo {
 
   @override
   Stream<List<Request>> getRequests() {
-    return _remoteDataSource.collectionWithConverter
-        .where('userId', isEqualTo: _authRepo.getLoggedUser().id)
-        .snapshots()
-        .asyncMap((event) async {
-      if (event.docs.isEmpty) {
-        return [];
-      }
-      final requests = await Future.wait(event.docs.map((e) async {
-        final branch = await _branchesRepo.getBranchById(e.data().branchId);
+    return _remoteDataSource.listenRequests().asyncMap((list) async {
+      final List<Request> requests = <Request>[];
+      for (var remoteData in list) {
+        var branch = await _branchesRepo.getBranchById(remoteData.branchId);
         if (branch != null) {
-          return RemoteDomainMapper.toDomain(
-              e.data(), await _authRepo.getUserInfo(), branch);
+          requests.add(RemoteDomainMapper.toDomain(
+              remoteData, await _authRepo.getUserInfo(), branch));
         }
-        return null;
-      }));
-      return requests.nonNulls.toList();
+      }
+      return requests;
     });
   }
 
@@ -94,7 +88,7 @@ class RequestsRepoImpl implements RequestsRepo {
   Future<Either<Failure, Unit>> save(Request request) async {
     try {
       await _remoteDataSource
-          .add(RemoteDomainMapper.toRequestRemoteDataModel(request));
+          .update(RemoteDomainMapper.toRequestRemoteDataModel(request));
       return right(unit);
     } catch (e) {
       return left(Failure());

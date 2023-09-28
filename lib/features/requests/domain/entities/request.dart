@@ -8,7 +8,7 @@ enum Status { pending, complete, cancelled }
 enum Service { consulting, finantial, savings }
 
 extension StringParsing on Service {
-  String parseString() {
+  String get name {
     switch (this) {
       case Service.consulting:
         return "Consulting";
