@@ -1,7 +1,9 @@
 import 'package:bankease/core/firestore_crud_operations.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RequestRemoteDataModel extends FirestoreDocumentModel {
-  final String service, requestDT, serviceDT, status, userId, branchId;
+  final String service, status, userId, branchId;
+  final Timestamp requestDT, serviceDT;
 
   RequestRemoteDataModel(
       {required String id,
@@ -37,8 +39,8 @@ class RequestRemoteDataModel extends FirestoreDocumentModel {
   RequestRemoteDataModel copyWith(
       {String? id,
       String? service,
-      String? requestDT,
-      String? serviceDT,
+      Timestamp? requestDT,
+      Timestamp? serviceDT,
       String? status,
       String? userId,
       String? branchId}) {

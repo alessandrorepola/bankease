@@ -1,24 +1,25 @@
 import 'package:bankease/features/requests/domain/entities/request.dart';
 import 'package:bankease/features/requests/domain/use_cases/get_filtered_branches_use_case.dart';
+import 'package:bankease/features/requests/presentation/manager/branches_bloc/branches_bloc.dart';
+import 'package:bankease/features/requests/presentation/widgets/branch_field.dart';
 import 'package:flutter/material.dart';
 import 'package:bankease/features/requests/presentation/manager/add_request/add_request_manager.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 
-class AddRequestDialog extends ConsumerWidget {
-  AddRequestDialog({Key? key}) : super(key: key);
+class AddRequestPage extends ConsumerWidget {
+  AddRequestPage({Key? key}) : super(key: key);
   final _formKey = GlobalKey<FormState>();
-  final _branchController = TextEditingController();
 
   @override
   Widget build(BuildContext context, ref) {
     final state = ref.watch(addRequestProvider);
     final notifier = ref.read(addRequestProvider.notifier);
 
-    return Dialog(
-      insetPadding: EdgeInsets.symmetric(horizontal: 8.h),
-      child: Padding(
+    return Scaffold(
+      appBar: AppBar(title: const Text('Book Service Request')),
+      body: Padding(
         padding: EdgeInsets.all(16.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -72,35 +73,10 @@ class AddRequestDialog extends ConsumerWidget {
                           Border.all(width: 1.0, color: Colors.grey.shade300),
                       borderRadius: BorderRadius.circular(10.0),
                     ),
-                    child: TypeAheadFormField(
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      textFieldConfiguration: TextFieldConfiguration(
-                          controller: _branchController,
-                          decoration:
-                              const InputDecoration(hintText: 'Type a Branch')),
-                      suggestionsCallback: (pattern) async {
-                        return await GetFilteredBranchesUseCase().call(pattern);
-                      },
-                      itemBuilder: (context, suggestion) {
-                        return ListTile(
-                          title: Text(suggestion.toString()),
-                        );
-                      },
-                      transitionBuilder: (context, suggestionsBox, controller) {
-                        return suggestionsBox;
-                      },
-                      onSuggestionSelected: (suggestion) {
-                        _branchController.text = suggestion.toString();
-                        notifier.onChangedBranch(suggestion.id);
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please select a branch';
-                        } else {
-                          return null;
-                        }
-                      },
-                      onSaved: (value) {},
+                    child: BlocProvider(
+                      create: (_) => BranchesBloc(GetFilteredBranchesUseCase())
+                        ..add(BranchesFetched()),
+                      child: const BranchField(),
                     ),
                   ),
                 ],

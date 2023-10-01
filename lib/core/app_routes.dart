@@ -1,3 +1,4 @@
+import 'package:bankease/features/requests/presentation/pages/add_request_page.dart';
 import 'package:bankease/features/requests/presentation/pages/request_details_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:bankease/features/auth/presentation/pages/login_page.dart';
@@ -11,6 +12,7 @@ class AppRoutes {
   static const String login = '/login';
   static const String register = '/register';
   static const String requestDetails = '/request_details';
+  static const String addRequestPage = '/add_request';
 
   String? initialRoute;
 
@@ -27,5 +29,6 @@ class AppRoutes {
         login: (context) => const LoginPage(),
         register: (context) => const RegisterPage(),
         requestDetails: (context) => const RequestDetailsPage(),
+        addRequestPage: (context) => AddRequestPage()
       };
 }

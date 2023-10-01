@@ -5,6 +5,9 @@ abstract class BranchesRepo {
   Future<Branch?> getBranchById(String id);
 
   Future<List<Branch>> getAll();
+
+  /// Get [limit] Branch objects from [fromId] Branch
+  Future<List<Branch>> getSome(String? fromId, int limit);
 }
 
 /// Error when a [Branch] with a given id is not found.

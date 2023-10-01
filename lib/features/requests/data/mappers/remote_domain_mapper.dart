@@ -2,6 +2,7 @@ import 'package:bankease/core/domain/entities/user_entity.dart';
 import 'package:bankease/features/requests/data/remote/models/request_remote_data_model.dart';
 import 'package:bankease/features/requests/domain/entities/branch.dart';
 import 'package:bankease/features/requests/domain/entities/request.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RemoteDomainMapper {
   static Request toDomain(
@@ -13,8 +14,8 @@ class RemoteDomainMapper {
           .firstWhere((element) => element.name == remoteData.service),
       status: Status.values
           .firstWhere((element) => element.name == remoteData.status),
-      requestDT: DateTime.tryParse(remoteData.requestDT),
-      serviceDT: DateTime.tryParse(remoteData.serviceDT),
+      requestDT: remoteData.requestDT.toDate(),
+      serviceDT: remoteData.serviceDT.toDate(),
       branch: branch,
     );
   }
@@ -23,8 +24,8 @@ class RemoteDomainMapper {
     return RequestRemoteDataModel(
         id: request.id,
         service: request.service.name,
-        requestDT: request.requestDT.toString(),
-        serviceDT: request.serviceDT.toString(),
+        requestDT: Timestamp.fromDate(request.requestDT),
+        serviceDT: Timestamp.fromDate(request.serviceDT),
         status: request.status.name,
         userId: request.user.id,
         branchId: request.branch.id);

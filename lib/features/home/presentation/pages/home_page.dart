@@ -1,41 +1,6 @@
-// import 'package:bankease/features/home/widgets/home_drawer.dart';
-// import 'package:bankease/features/profile/presentation/pages/profile_page.dart';
-// import 'package:bankease/features/requests/presentation/pages/requests_page.dart';
-// import 'package:flutter/material.dart';
-
-// class HomePage extends StatelessWidget {
-//   const HomePage({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return DefaultTabController(
-//       length: 2,
-//       child: Scaffold(
-//         drawer: const HomeDrawer(),
-//         appBar: AppBar(
-//           title: const Text('Home'),
-//           bottom: const TabBar(
-//             tabs: <Widget>[
-//               Tab(
-//                 text: 'Requests',
-//               ),
-//               Tab(
-//                 text: 'Account',
-//               ),
-//             ],
-//           ),
-//         ),
-//         body: const TabBarView(
-//           children: <Widget>[RequestsPage(), ProfilePage()],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
+import 'package:bankease/core/app_routes.dart';
 import 'package:bankease/features/home/presentation/manager/home_cubit.dart';
 import 'package:bankease/features/profile/presentation/pages/profile_page.dart';
-import 'package:bankease/features/requests/presentation/dialogs/add_request_dialog.dart';
 import 'package:bankease/features/requests/presentation/pages/requests_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -69,7 +34,7 @@ class HomeView extends StatelessWidget {
         key: UniqueKey(),
         child: const Icon(Icons.add),
         onPressed: () =>
-            showDialog(context: context, builder: (_) => AddRequestDialog()),
+            Navigator.of(context).pushNamed(AppRoutes.addRequestPage),
       ),
       bottomNavigationBar: BottomAppBar(
         shape: const CircularNotchedRectangle(),

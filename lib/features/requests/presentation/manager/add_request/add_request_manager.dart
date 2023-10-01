@@ -34,8 +34,8 @@ class AddRequestManager extends StateNotifier<AddRequestState> {
     final result = await _addRequestsUseCase.call(AddRequestParams(
       state.service!,
       state.branchId,
-      requestDT.toString(),
-      serviceDT.toString(),
+      requestDT,
+      serviceDT,
     ));
     result.fold(
         (l) => null,

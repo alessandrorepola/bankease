@@ -25,4 +25,15 @@ class BranchesRepoImpl implements BranchesRepo {
     }
     return branches;
   }
+
+  @override
+  Future<List<Branch>> getSome(String? fromId, int limit) async {
+    final branches = <Branch>[];
+    final result = await _branchesRemoteDataSource.getSome(fromId, limit);
+    for (int i = 0; i < result.length; i++) {
+      final request = BranchRemoteDomainMapper.toDomain(result[i]);
+      branches.add(request);
+    }
+    return branches;
+  }
 }

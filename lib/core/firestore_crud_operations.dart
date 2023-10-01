@@ -40,8 +40,8 @@ class FirestoreCrudOperations<T extends FirestoreDocumentModel> {
         .map((event) => event.docs.map((e) => e.data()).toList());
   }
 
-  Future<List<T>> getAll() async {
-    final result = await _collectionWithConverter.get();
+  Future<List<T>> getAll([Query<T>? query]) async {
+    final result = await (query?.get() ?? _collectionWithConverter.get());
     return result.docs.map((e) => e.data()).toList();
   }
 

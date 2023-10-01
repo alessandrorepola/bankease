@@ -17,8 +17,8 @@ class AddRequestsUseCase implements FailureUseCase<Request, AddRequestParams> {
 
 class AddRequestParams {
   final String service;
-  final String requestDT;
-  final String serviceDT;
+  final DateTime requestDT;
+  final DateTime serviceDT;
   final String state;
   final String branchId;
 

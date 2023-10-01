@@ -1,4 +1,5 @@
 import 'package:bankease/features/requests/domain/repositories/branches_repo.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:bankease/core/failures/failures.dart';
 import 'package:bankease/features/auth/domain/repositories/auth_repo.dart';
@@ -24,8 +25,8 @@ class RequestsRepoImpl implements RequestsRepo {
       final result = await _remoteDataSource.add(RequestRemoteDataModel(
           id: id,
           service: params.service,
-          requestDT: params.requestDT,
-          serviceDT: params.serviceDT,
+          requestDT: Timestamp.fromDate(params.requestDT),
+          serviceDT: Timestamp.fromDate(params.serviceDT),
           status: params.state,
           branchId: params.branchId,
           userId: _authRepo.getLoggedUser().id));
