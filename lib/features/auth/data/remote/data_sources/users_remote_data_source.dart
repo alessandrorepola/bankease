@@ -64,4 +64,8 @@ class UsersRemoteDataSource
     }
     return null;
   }
+
+  Future<void> logout() {
+    return _firebaseAuth.signOut();
+  }
 }

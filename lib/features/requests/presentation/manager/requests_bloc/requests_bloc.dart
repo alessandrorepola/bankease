@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bankease/features/requests/domain/entities/request.dart';
 import 'package:bankease/features/requests/domain/repositories/requests_repo.dart';
 import 'package:bankease/features/requests/domain/use_cases/delete_request_use_case.dart';
@@ -45,9 +47,11 @@ class RequestsBloc extends Bloc<RequestsEvent, RequestsState> {
           ..sort((a, b) => a.serviceDT.compareTo(b.serviceDT))
           ..sort((a, b) => a.status.index.compareTo(b.status.index)),
       ),
-      onError: (_, __) => state.copyWith(
-        status: () => RequestsStatus.failure,
-      ),
+      onError: (error, __) {
+        return state.copyWith(
+          status: () => RequestsStatus.failure,
+        );
+      },
     );
   }
 

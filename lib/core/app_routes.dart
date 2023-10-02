@@ -8,13 +8,13 @@ import 'package:bankease/features/home/presentation/pages/home_page.dart';
 class AppRoutes {
   final FirebaseAuth firebaseAuth;
 
-  static const String home = '/';
+  static const String home = '/home';
   static const String login = '/login';
   static const String register = '/register';
-  static const String requestDetails = '/request_details';
-  static const String addRequestPage = '/add_request';
+  static const String requestDetails = '/home/request_details';
+  static const String addRequestPage = '/home/add_request';
 
-  String? initialRoute;
+  late final String initialRoute;
 
   AppRoutes(this.firebaseAuth) {
     if (firebaseAuth.currentUser == null) {

@@ -1,7 +1,4 @@
-// ignore_for_file: unused_local_variable
-
 import 'package:dartz/dartz.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:bankease/core/domain/entities/user_entity.dart';
 import 'package:bankease/core/failures/failures.dart';
 import 'package:bankease/core/value_objects/email_value_object.dart';
@@ -14,9 +11,8 @@ import 'package:bankease/features/auth/domain/use_cases/register_use_case.dart';
 
 class AuthRepoImpl implements AuthRepo {
   final UsersRemoteDataSource _usersRemoteDataSource;
-  final FirebaseAuth _firebaseAuth;
 
-  AuthRepoImpl(this._usersRemoteDataSource, this._firebaseAuth);
+  AuthRepoImpl(this._usersRemoteDataSource);
 
   @override
   UserEntity getLoggedUser() {
@@ -33,7 +29,7 @@ class AuthRepoImpl implements AuthRepo {
   Future<Either<AuthFailure, UserEntity>> login(
       EmailAddress emailAddress, Password password) async {
     try {
-      final result = await _usersRemoteDataSource.login(
+      await _usersRemoteDataSource.login(
           emailAddress.getOrCrash(), password.getOrCrash());
       return const Right(
           UserEntity(id: '', name: '', email: '', profilePicture: ''));
@@ -72,7 +68,7 @@ class AuthRepoImpl implements AuthRepo {
   Future<Either<AuthFailure, Unit>> register(
       RegisterParams registerParams) async {
     try {
-      final result = await _usersRemoteDataSource.register(
+      await _usersRemoteDataSource.register(
           registerParams.fullName,
           registerParams.emailAddress.getOrCrash(),
           registerParams.password.getOrCrash());
@@ -94,7 +90,7 @@ class AuthRepoImpl implements AuthRepo {
   }
 
   @override
-  Future<void> logout() {
-    return _firebaseAuth.signOut();
+  Future<void> logout() async {
+    return await _usersRemoteDataSource.logout();
   }
 }
