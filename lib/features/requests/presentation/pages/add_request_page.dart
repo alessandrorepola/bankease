@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bankease/features/requests/domain/entities/request.dart';
 import 'package:bankease/features/requests/domain/use_cases/get_filtered_branches_use_case.dart';
 import 'package:bankease/features/requests/presentation/manager/branches_bloc/branches_bloc.dart';
@@ -11,6 +13,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class AddRequestPage extends ConsumerWidget {
   AddRequestPage({Key? key}) : super(key: key);
   final _formKey = GlobalKey<FormState>();
+  final _provinceTextController = TextEditingController();
+  final _cityTextController = TextEditingController();
 
   @override
   Widget build(BuildContext context, ref) {
@@ -62,6 +66,40 @@ class AddRequestPage extends ConsumerWidget {
                         return DropdownMenuItem(
                             value: valueItem.name, child: Text(valueItem.name));
                       }).toList(),
+                    ),
+                  ),
+                  SizedBox(height: 20.h),
+                  Container(
+                    height: 50.0,
+                    padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                    decoration: BoxDecoration(
+                      border:
+                          Border.all(width: 1.0, color: Colors.grey.shade300),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: TextField(
+                      controller: _provinceTextController,
+                      onSubmitted: (value) {
+                        _provinceTextController.text = value;
+                        log(_provinceTextController.text);
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 20.h),
+                  Container(
+                    height: 50.0,
+                    padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                    decoration: BoxDecoration(
+                      border:
+                          Border.all(width: 1.0, color: Colors.grey.shade300),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: TextField(
+                      controller: _cityTextController,
+                      onSubmitted: (value) {
+                        _cityTextController.text = value;
+                        log(_cityTextController.text);
+                      },
                     ),
                   ),
                   SizedBox(height: 20.h),

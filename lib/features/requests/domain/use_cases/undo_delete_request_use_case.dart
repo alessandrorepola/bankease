@@ -20,8 +20,7 @@ class UndoDeleteRequestUseCase implements FailureUseCase<Unit, Request> {
     result.fold(
       (l) => null,
       (r) => sl<LocalNotificationService>()
-          .scheduleNotificationWhenThirtyMinutsLeftFrom(
-              request.serviceDT, request),
+          .scheduleNotificationWhenThirtyMinutsLeftFrom(request),
     );
     return result;
   }

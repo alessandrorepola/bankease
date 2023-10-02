@@ -59,9 +59,6 @@ class LocalNotificationService {
 
   String? selectedNotificationPayload;
 
-  /// A notification action which triggers a App navigation event
-  final String navigationActionId = 'id_3';
-
   LocalNotificationService();
 
   Future<void> init() async {
@@ -79,8 +76,6 @@ class LocalNotificationService {
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('@mipmap/ic_launcher');
 
-    /// Note: permissions aren't requested here just to demonstrate that can be
-    /// done later
     final DarwinInitializationSettings initializationSettingsDarwin =
         DarwinInitializationSettings(
       requestAlertPermission: false,
@@ -109,15 +104,9 @@ class LocalNotificationService {
       onDidReceiveNotificationResponse:
           (NotificationResponse notificationResponse) {
         onSelectNotification(notificationResponse.payload);
-        switch (notificationResponse.notificationResponseType) {
-          case NotificationResponseType.selectedNotification:
-            selectNotificationStream.add(notificationResponse.payload);
-            break;
-          case NotificationResponseType.selectedNotificationAction:
-            if (notificationResponse.actionId == navigationActionId) {
-              selectNotificationStream.add(notificationResponse.payload);
-            }
-            break;
+        if (notificationResponse.notificationResponseType ==
+            NotificationResponseType.selectedNotification) {
+          selectNotificationStream.add(notificationResponse.payload);
         }
       },
       onDidReceiveBackgroundNotificationResponse: notificationTapBackground,
@@ -151,13 +140,14 @@ class LocalNotificationService {
   }
 
   Future<void> scheduleNotificationWhenThirtyMinutsLeftFrom(
-      DateTime dt, Request request) async {
-    log(tz.TZDateTime.from(dt, tz.local).toString());
+      Request request) async {
+    log(tz.TZDateTime.from(request.serviceDT, tz.local).toString());
     await flutterLocalNotificationsPlugin.zonedSchedule(
         request.id.hashCode,
         '${request.service.name} service',
-        'Reminder for your ${request.service.name} service at ${request.requestTime}',
-        tz.TZDateTime.from(dt, tz.local).subtract(const Duration(minutes: 30)),
+        'Reminder for your ${request.service.name.toLowerCase()} service at ${request.serviceTime}',
+        tz.TZDateTime.from(request.serviceDT, tz.local)
+            .subtract(const Duration(minutes: 30)),
         const NotificationDetails(
             android: AndroidNotificationDetails(
                 'bankease_local_notification_id',

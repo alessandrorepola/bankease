@@ -54,12 +54,6 @@ class FirestoreCrudOperations<T extends FirestoreDocumentModel> {
     await _collectionWithConverter.doc(id).delete();
   }
 
-  Future<void> update(
-    T data,
-  ) async {
-    await _collectionWithConverter.doc(data.id).update(data.toMap());
-  }
-
   Future<T?> getOne(
     String id,
   ) async {

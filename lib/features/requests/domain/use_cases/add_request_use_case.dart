@@ -19,13 +19,9 @@ class AddRequestParams {
   final String service;
   final DateTime requestDT;
   final DateTime serviceDT;
-  final String state;
+  final String status;
   final String branchId;
 
-  AddRequestParams(
-    this.service,
-    this.branchId,
-    this.requestDT,
-    this.serviceDT,
-  ) : state = 'pending';
+  AddRequestParams(this.service, this.branchId, this.requestDT, this.serviceDT)
+      : status = 'pending';
 }

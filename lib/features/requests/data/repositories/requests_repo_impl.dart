@@ -27,7 +27,7 @@ class RequestsRepoImpl implements RequestsRepo {
           service: params.service,
           requestDT: Timestamp.fromDate(params.requestDT),
           serviceDT: Timestamp.fromDate(params.serviceDT),
-          status: params.state,
+          status: params.status,
           branchId: params.branchId,
           userId: _authRepo.getLoggedUser().id));
       return right(
@@ -37,6 +37,23 @@ class RequestsRepoImpl implements RequestsRepo {
           (await _branchesRepo.getBranchById(result.branchId))!,
         ),
       );
+    } catch (e) {
+      return left(Failure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, Unit>> save(Request request) async {
+    try {
+      await _remoteDataSource.add(RequestRemoteDataModel(
+          id: request.id,
+          service: request.service.name,
+          requestDT: Timestamp.fromDate(request.requestDT),
+          serviceDT: Timestamp.fromDate(request.serviceDT),
+          status: request.status.name,
+          branchId: request.branch.id,
+          userId: request.user.id));
+      return right(unit);
     } catch (e) {
       return left(Failure());
     }
@@ -83,16 +100,5 @@ class RequestsRepoImpl implements RequestsRepo {
       }
       return requests;
     });
-  }
-
-  @override
-  Future<Either<Failure, Unit>> save(Request request) async {
-    try {
-      await _remoteDataSource
-          .update(RemoteDomainMapper.toRequestRemoteDataModel(request));
-      return right(unit);
-    } catch (e) {
-      return left(Failure());
-    }
   }
 }

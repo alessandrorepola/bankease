@@ -11,7 +11,7 @@ import 'package:stream_transform/stream_transform.dart';
 part 'branches_event.dart';
 part 'branches_state.dart';
 
-const _branchesLimit = 20;
+const _branchesLimit = 150;
 const throttleDuration = Duration(milliseconds: 100);
 
 EventTransformer<E> throttleDroppable<E>(Duration duration) {

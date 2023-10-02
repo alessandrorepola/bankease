@@ -17,8 +17,9 @@ abstract class RequestsRepo {
 
   /// Add a new [Request].
   ///
-  /// If a [Request] with the same id already exists, it will be replaced.
-  /// If a [Request] is add saccesfully return [RequestNotFoundFailure]
+  /// Use only the required parameters to create a new request, specified with [AddRequestParams]
+  /// The id of request is automatically created
+  /// If a [Request] is add saccesfully return [Request]
   Future<Either<Failure, Request>> add(AddRequestParams addRequestParams);
 
   /// Saves changes of a [Request] .
