@@ -30,6 +30,7 @@ class RequestsView extends StatelessWidget {
       drawer: const HomeDrawer(),
       appBar: AppBar(
         title: const Text('Requests'),
+        centerTitle: true,
         actions: const [
           RequestsFilterButton(),
         ],

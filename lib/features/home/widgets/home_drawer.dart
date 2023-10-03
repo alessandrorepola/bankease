@@ -63,10 +63,10 @@ class HomeDrawer extends ConsumerWidget {
           DrawerTile(
               iconData: Icons.logout,
               text: 'Logout',
-              onTap: () async {
-                await ref.read(profileProvider.notifier).logout().then(
-                    (value) => Navigator.of(context).pushNamedAndRemoveUntil(
-                        AppRoutes.login, (Route<dynamic> route) => false));
+              onTap: () {
+                ref.read(profileProvider.notifier).logout();
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    AppRoutes.login, (Route<dynamic> route) => false);
               }),
         ],
       ),

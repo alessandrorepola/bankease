@@ -22,7 +22,10 @@ class AddRequestPage extends ConsumerWidget {
     final notifier = ref.read(addRequestProvider.notifier);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Book Service Request')),
+      appBar: AppBar(
+        title: const Text('Book Service Request'),
+        centerTitle: true,
+      ),
       body: Padding(
         padding: EdgeInsets.all(16.w),
         child: Column(

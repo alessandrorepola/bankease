@@ -16,6 +16,7 @@ class ProfilePage extends ConsumerWidget {
       drawer: const HomeDrawer(),
       appBar: AppBar(
         title: const Text('Account'),
+        centerTitle: true,
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
