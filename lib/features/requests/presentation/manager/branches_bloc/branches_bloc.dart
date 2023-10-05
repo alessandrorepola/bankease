@@ -38,7 +38,6 @@ class BranchesBloc extends Bloc<BranchesEvent, BranchesState> {
     BranchesFetched event,
     Emitter<BranchesState> emit,
   ) async {
-    log('città: ${state.city}');
     if (state.hasReachedMax) return;
     try {
       if (state.status == BranchesStatus.initial) {

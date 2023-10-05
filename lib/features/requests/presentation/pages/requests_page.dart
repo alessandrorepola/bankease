@@ -41,7 +41,8 @@ class RequestsView extends StatelessWidget {
         listeners: [
           BlocListener<RequestsBloc, RequestsState>(
             listenWhen: (previous, current) =>
-                previous.status != current.status,
+                previous.status != current.status &&
+                previous.status != RequestsStatus.initial,
             listener: (context, state) {
               if (state.status == RequestsStatus.failure) {
                 ScaffoldMessenger.of(context)
@@ -52,38 +53,45 @@ class RequestsView extends StatelessWidget {
                           Text('An error occurred while loading requests.'),
                     ),
                   );
-              }
-              if (state.status == RequestsStatus.loading) {
+              } else if (state.status == RequestsStatus.loading) {
                 LoadingDialog.show(context);
-              }
-              if (state.status == RequestsStatus.success) {
+              } else if (state.status == RequestsStatus.success) {
                 LoadingDialog.hide(context);
               }
             },
           ),
           BlocListener<RequestsBloc, RequestsState>(
-            listenWhen: (previous, current) =>
-                previous.lastDeletedRequest != current.lastDeletedRequest &&
-                current.lastDeletedRequest != null,
-            listener: (context, state) {
-              final messenger = ScaffoldMessenger.of(context);
-              messenger
-                ..hideCurrentSnackBar()
-                ..showSnackBar(
-                  SnackBar(
-                    duration: const Duration(seconds: 4),
-                    content: const Text('Request deleted.'),
-                    action: SnackBarAction(
-                      label: 'Undo',
-                      onPressed: () {
-                        messenger.hideCurrentSnackBar();
-                        context
-                            .read<RequestsBloc>()
-                            .add(const RequestsUndoDeletionRequested());
-                      },
+            listenWhen: (previous, current) {
+              return previous.lastDeletedRequest !=
+                      current.lastDeletedRequest &&
+                  current.lastDeletedRequest != null;
+            },
+            listener: (context, state) async {
+              // only when delete event is complete
+              context
+                  .read<RequestsBloc>()
+                  .stream
+                  .firstWhere((state) => state.status == RequestsStatus.success)
+                  .then((value) {
+                final messenger = ScaffoldMessenger.of(context);
+                messenger
+                  ..hideCurrentSnackBar()
+                  ..showSnackBar(
+                    SnackBar(
+                      duration: const Duration(seconds: 5),
+                      content: const Text('Request deleted.'),
+                      action: SnackBarAction(
+                        label: 'Undo',
+                        onPressed: () {
+                          messenger.hideCurrentSnackBar();
+                          context
+                              .read<RequestsBloc>()
+                              .add(const RequestsUndoDeletionRequested());
+                        },
+                      ),
                     ),
-                  ),
-                );
+                  );
+              });
             },
           ),
         ],
@@ -97,6 +105,11 @@ class RequestsView extends StatelessWidget {
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
               );
+            }
+            if (state.filteredRequests.isEmpty &&
+                state.status == RequestsStatus.initial) {
+              return const Center(
+                  child: Center(child: CircularProgressIndicator()));
             }
 
             return Scrollbar(

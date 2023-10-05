@@ -36,7 +36,7 @@ class RequestsBloc extends Bloc<RequestsEvent, RequestsState> {
     RequestsSubscriptionRequested event,
     Emitter<RequestsState> emit,
   ) async {
-    emit(state.copyWith(status: () => RequestsStatus.loading));
+    emit(state.copyWith(status: () => RequestsStatus.initial));
 
     // creates a subscription on the requests stream from the RequestsRepo
     await emit.forEach<List<Request>>(
@@ -72,7 +72,6 @@ class RequestsBloc extends Bloc<RequestsEvent, RequestsState> {
         status: () => RequestsStatus.loading));
 
     await _deleteRequestUseCase.call(event.request.id);
-    emit(state.copyWith(status: () => RequestsStatus.success));
   }
 
   Future<void> _onUndoDeletionRequested(
