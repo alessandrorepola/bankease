@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../dialogs/loading_dialog.dart';
+
 class RequestsPage extends StatelessWidget {
   const RequestsPage({super.key});
 
@@ -51,6 +53,12 @@ class RequestsView extends StatelessWidget {
                     ),
                   );
               }
+              if (state.status == RequestsStatus.loading) {
+                LoadingDialog.show(context);
+              }
+              if (state.status == RequestsStatus.success) {
+                LoadingDialog.hide(context);
+              }
             },
           ),
           BlocListener<RequestsBloc, RequestsState>(
@@ -63,6 +71,7 @@ class RequestsView extends StatelessWidget {
                 ..hideCurrentSnackBar()
                 ..showSnackBar(
                   SnackBar(
+                    duration: const Duration(seconds: 4),
                     content: const Text('Request deleted.'),
                     action: SnackBarAction(
                       label: 'Undo',
@@ -80,19 +89,14 @@ class RequestsView extends StatelessWidget {
         ],
         child: BlocBuilder<RequestsBloc, RequestsState>(
           builder: (context, state) {
-            if (state.filteredRequests.isEmpty) {
-              if (state.status == RequestsStatus.loading) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (state.status != RequestsStatus.success) {
-                return const SizedBox();
-              } else {
-                return Center(
-                  child: Text(
-                    'No requests found with the selected filters.',
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
-                );
-              }
+            if (state.filteredRequests.isEmpty &&
+                state.status == RequestsStatus.success) {
+              return Center(
+                child: Text(
+                  'No requests found with the selected filters.',
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+              );
             }
 
             return Scrollbar(

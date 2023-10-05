@@ -55,6 +55,7 @@ class RequestCard extends StatelessWidget {
         ),
         child: ListTile(
           onTap: onTap,
+          isThreeLine: true,
           title: Text(
             request.service.name,
             maxLines: 1,
@@ -71,10 +72,21 @@ class RequestCard extends StatelessWidget {
           ),
           subtitle: Padding(
             padding: const EdgeInsets.only(top: 8),
-            child: Text(
-              request.branch.institute,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  request.branch.institute,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                SizedBox(height: 4.h),
+                Text(
+                  '${request.branch.address}, ${request.branch.postalCode}, ${request.branch.province}',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
             ),
           ),
           leading: RemainingTimeWidget(request: request),

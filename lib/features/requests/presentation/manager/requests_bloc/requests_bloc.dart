@@ -67,11 +67,12 @@ class RequestsBloc extends Bloc<RequestsEvent, RequestsState> {
     RequestDeleted event,
     Emitter<RequestsState> emit,
   ) async {
-    emit(
-      state.copyWith(lastDeletedRequest: () => event.request),
-    );
+    emit(state.copyWith(
+        lastDeletedRequest: () => event.request,
+        status: () => RequestsStatus.loading));
 
     await _deleteRequestUseCase.call(event.request.id);
+    emit(state.copyWith(status: () => RequestsStatus.success));
   }
 
   Future<void> _onUndoDeletionRequested(

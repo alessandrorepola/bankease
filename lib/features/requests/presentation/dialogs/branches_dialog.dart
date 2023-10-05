@@ -1,3 +1,4 @@
+import 'package:bankease/features/requests/domain/entities/branch.dart';
 import 'package:bankease/features/requests/presentation/manager/add_request/add_request_manager.dart';
 import 'package:bankease/features/requests/presentation/manager/branches_bloc/branches_bloc.dart';
 import 'package:flutter/material.dart';
@@ -5,12 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class BranchesDialog extends ConsumerStatefulWidget {
-  const BranchesDialog({
-    super.key,
-    required TextEditingController branchController,
-  }) : _branchController = branchController;
-
-  final TextEditingController _branchController;
+  const BranchesDialog({super.key});
 
   @override
   ConsumerState<BranchesDialog> createState() => _BranchesDialogState();
@@ -73,13 +69,18 @@ class _BranchesDialogState extends ConsumerState<BranchesDialog> {
                     constraints: const BoxConstraints(maxHeight: 550),
                     child: state.filteredBranches.isEmpty
                         ? Center(
-                            child: Text(
-                              'No branches found',
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
+                            child: state.status == BranchesStatus.loading
+                                ? const Center(
+                                    child: CircularProgressIndicator(),
+                                  )
+                                : Text(
+                                    'No branches found',
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium,
+                                  ),
                           )
                         : ListView.builder(
-                            itemBuilder: (BuildContext context, int index) {
+                            itemBuilder: (BuildContext _, int index) {
                               if (index >= state.filteredBranches.length) {
                                 if (!state.hasReachedMax) {
                                   context
@@ -107,11 +108,10 @@ class _BranchesDialogState extends ConsumerState<BranchesDialog> {
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 onTap: () {
-                                  widget._branchController.text =
-                                      state.filteredBranches[index].toString();
                                   notifier.onChangedBranch(
                                       state.filteredBranches[index].id);
-                                  Navigator.of(context).pop();
+                                  Navigator.of(context).pop<Branch>(
+                                      state.filteredBranches[index]);
                                 },
                               );
                             },

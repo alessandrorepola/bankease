@@ -1,9 +1,7 @@
-import 'dart:developer';
-
 import 'package:bankease/features/requests/domain/entities/request.dart';
-import 'package:bankease/features/requests/domain/use_cases/get_filtered_branches_use_case.dart';
 import 'package:bankease/features/requests/presentation/manager/branches_bloc/branches_bloc.dart';
-import 'package:bankease/features/requests/presentation/widgets/branch_field.dart';
+import 'package:bankease/features/requests/presentation/manager/cities_cubit.dart/cities_cubit.dart';
+import 'package:bankease/features/requests/presentation/widgets/branch_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:bankease/features/requests/presentation/manager/add_request/add_request_manager.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,8 +11,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class AddRequestPage extends ConsumerWidget {
   AddRequestPage({Key? key}) : super(key: key);
   final _formKey = GlobalKey<FormState>();
-  final _provinceTextController = TextEditingController();
-  final _cityTextController = TextEditingController();
 
   @override
   Widget build(BuildContext context, ref) {
@@ -22,9 +18,24 @@ class AddRequestPage extends ConsumerWidget {
     final notifier = ref.read(addRequestProvider.notifier);
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text('Book Service Request'),
         centerTitle: true,
+        actions: [
+          IconButton(
+            key: UniqueKey(),
+            onPressed: () {
+              if (_formKey.currentState!.validate()) {
+                notifier.addRequest();
+                Navigator.of(context).pop();
+              }
+            },
+            icon: const Icon(
+              Icons.save,
+            ),
+          ),
+        ],
       ),
       body: Padding(
         padding: EdgeInsets.all(16.w),
@@ -72,81 +83,21 @@ class AddRequestPage extends ConsumerWidget {
                     ),
                   ),
                   SizedBox(height: 20.h),
-                  Container(
-                    height: 50.0,
-                    padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-                    decoration: BoxDecoration(
-                      border:
-                          Border.all(width: 1.0, color: Colors.grey.shade300),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: TextField(
-                      controller: _provinceTextController,
-                      onSubmitted: (value) {
-                        _provinceTextController.text = value;
-                        log(_provinceTextController.text);
-                      },
-                    ),
-                  ),
-                  SizedBox(height: 20.h),
-                  Container(
-                    height: 50.0,
-                    padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-                    decoration: BoxDecoration(
-                      border:
-                          Border.all(width: 1.0, color: Colors.grey.shade300),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: TextField(
-                      controller: _cityTextController,
-                      onSubmitted: (value) {
-                        _cityTextController.text = value;
-                        log(_cityTextController.text);
-                      },
-                    ),
-                  ),
-                  SizedBox(height: 20.h),
-                  Container(
-                    height: 50.0,
-                    padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-                    decoration: BoxDecoration(
-                      border:
-                          Border.all(width: 1.0, color: Colors.grey.shade300),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: BlocProvider(
-                      create: (_) => BranchesBloc(GetFilteredBranchesUseCase())
-                        ..add(BranchesFetched()),
-                      child: const BranchField(),
-                    ),
+                  const Divider(height: 10),
+                  MultiBlocProvider(
+                    providers: [
+                      BlocProvider<BranchesBloc>(
+                        create: (context) => BranchesBloc(),
+                      ),
+                      BlocProvider<CitiesCubit>(
+                        create: (context) => CitiesCubit(),
+                      ),
+                    ],
+                    child: const BranchFields(),
                   ),
                 ],
               ),
             ),
-            SizedBox(height: 100.h),
-            Row(
-              children: [
-                Expanded(
-                  child: Center(
-                    child: TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: const Text('Cancel')),
-                  ),
-                ),
-                Expanded(
-                  child: Center(
-                    child: TextButton(
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            notifier.addRequest();
-                            Navigator.of(context).pop();
-                          }
-                        },
-                        child: const Text('Save')),
-                  ),
-                ),
-              ],
-            )
           ],
         ),
       ),

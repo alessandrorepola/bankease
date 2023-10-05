@@ -10,16 +10,31 @@ class BranchesRemoteDataSource
             (snapshot) =>
                 BranchRemoteDataModel.fromFirestoreDocument(snapshot));
 
-  Future<List<BranchRemoteDataModel>> getSome(String? fromId, int limit) async {
+  Future<List<BranchRemoteDataModel>> getSome(
+      String fromId, String city, int limit) async {
     Query<BranchRemoteDataModel> query;
-    if (fromId != null) {
+    if (fromId.isEmpty && city.isEmpty) {
+      query = collectionWithConverter.limit(limit);
+      return super.getAll(query);
+    }
+    if (fromId.isNotEmpty && city.isEmpty) {
       query = await collectionWithConverter.doc(fromId).get().then(
           (documentSnapshot) => collectionWithConverter
               .startAfterDocument(documentSnapshot)
               .limit(limit));
-    } else {
-      query = collectionWithConverter.limit(limit);
+      return super.getAll(query);
     }
+    if (fromId.isEmpty && city.isNotEmpty) {
+      query = collectionWithConverter
+          .where('city', isEqualTo: city.toUpperCase())
+          .limit(limit);
+      return super.getAll(query);
+    }
+    query = await collectionWithConverter.doc(fromId).get().then(
+        (documentSnapshot) => collectionWithConverter
+            .startAfterDocument(documentSnapshot)
+            .where('city', isEqualTo: city.toUpperCase())
+            .limit(limit));
     return super.getAll(query);
   }
 }

@@ -15,3 +15,21 @@ class BranchesFilterChanged extends BranchesEvent {
   @override
   List<Object> get props => [filter];
 }
+
+class CitySelected extends BranchesEvent {
+  CitySelected(this.city);
+
+  final String city;
+
+  @override
+  List<Object> get props => [city];
+}
+
+class BranchSelected extends BranchesEvent {
+  BranchSelected(this.branch);
+
+  final Branch branch;
+
+  @override
+  List<Object> get props => [branch];
+}

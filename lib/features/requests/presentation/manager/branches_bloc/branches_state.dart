@@ -1,6 +1,6 @@
 part of 'branches_bloc.dart';
 
-enum BranchesStatus { initial, success, failure }
+enum BranchesStatus { initial, success, failure, loading }
 
 final class BranchesState extends Equatable {
   const BranchesState({
@@ -8,6 +8,8 @@ final class BranchesState extends Equatable {
     this.branches = const <Branch>[],
     this.filteredBranches = const <Branch>[],
     this.filter = '',
+    this.city = '',
+    this.branch,
     this.hasReachedMax = false,
   });
 
@@ -16,20 +18,26 @@ final class BranchesState extends Equatable {
   final List<Branch> filteredBranches;
   final bool hasReachedMax;
   final String filter;
+  final String city;
+  final Branch? branch;
 
   BranchesState copyWith({
     BranchesStatus? status,
     List<Branch>? branches,
     List<Branch>? filteredBranches,
     String? filter,
+    String? city,
     bool? hasReachedMax,
+    Branch? branch,
   }) {
     return BranchesState(
       status: status ?? this.status,
       branches: branches ?? this.branches,
       filteredBranches: filteredBranches ?? this.filteredBranches,
       filter: filter ?? this.filter,
+      city: city ?? this.city,
       hasReachedMax: hasReachedMax ?? this.hasReachedMax,
+      branch: branch ?? this.branch,
     );
   }
 
@@ -39,11 +47,13 @@ final class BranchesState extends Equatable {
   }
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         status,
         branches,
         filteredBranches,
         hasReachedMax,
         filter,
+        city,
+        branch,
       ];
 }

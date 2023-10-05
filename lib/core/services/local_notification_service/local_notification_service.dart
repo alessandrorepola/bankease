@@ -7,13 +7,10 @@ import 'package:bankease/core/injection.dart';
 import 'package:bankease/core/navigator.dart';
 import 'package:bankease/features/requests/domain/entities/request.dart';
 import 'package:bankease/features/requests/domain/repositories/requests_repo.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:flutter_timezone/flutter_timezone.dart';
-
-int id = 0;
 
 class ReceivedNotification {
   ReceivedNotification({
@@ -124,21 +121,6 @@ class LocalNotificationService {
     tz.setLocalLocation(tz.getLocation(timeZoneName));
   }
 
-  Future<void> showNotification() async {
-    const AndroidNotificationDetails androidNotificationDetails =
-        AndroidNotificationDetails(
-            'bankease_local_notification_id', 'Bankease local notifications',
-            channelDescription: 'This channel is used for important reminder.',
-            importance: Importance.max,
-            priority: Priority.high,
-            ticker: 'ticker');
-    const NotificationDetails notificationDetails =
-        NotificationDetails(android: androidNotificationDetails);
-    await flutterLocalNotificationsPlugin.show(
-        id++, 'plain title', 'plain body', notificationDetails,
-        payload: 'item x');
-  }
-
   Future<void> scheduleNotificationWhenThirtyMinutsLeftFrom(
       Request request) async {
     log(tz.TZDateTime.from(request.serviceDT, tz.local).toString());
@@ -175,9 +157,8 @@ class LocalNotificationService {
 
   Future<void> onSelectNotification(String? payload) async {
     if (payload != null) {
-      await sl<RequestsRepo>().getRequestById(payload).then((value) => value
-              .fold((l) => debugPrint("Error in RequestRepo.getRequestById"),
-                  (r) {
+      await sl<RequestsRepo>().getRequestById(payload).then((value) =>
+          value.fold((l) => log("Error in RequestRepo.getRequestById"), (r) {
             CustomNavigator.key.currentState
                 ?.pushNamed(AppRoutes.requestDetails, arguments: r);
           }));
